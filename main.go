@@ -20,7 +20,6 @@ func main() {
 	router.Use(gin.Logger())
 
 	router.GET("/", func(c *gin.Context) {
-		//c.HTML(http.StatusOK, "index.tmpl.html", nil)
 		c.String(200, "hello world\n")
 	})
 

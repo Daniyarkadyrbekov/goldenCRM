@@ -1,0 +1,5 @@
+=== RUN   Test_Main
+--- PASS: Test_Main (0.00s)
+PASS
+coverage: 0.0% of statements
+ok  	github.com/goldenCRM.git	1.040s	coverage: 0.0% of statements

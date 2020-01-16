@@ -17,10 +17,11 @@ func main() {
 	}
 
 	router := gin.New()
+	router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Use(gin.Logger())
 
 	router.GET("/", func(c *gin.Context) {
-		c.String(200, "hello world\n")
+		c.HTML(200, "index.tmpl.html", nil)
 	})
 
 	router.Run(":" + port)

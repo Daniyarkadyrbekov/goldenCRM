@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	fmt.Printf("hello world!\n")
 	port := os.Getenv("PORT")
 
 	if port == "" {
@@ -17,11 +16,21 @@ func main() {
 	}
 
 	router := gin.New()
-	router.LoadHTMLGlob("templates/*.tmpl.html")
+	//router.LoadHTMLGlob("templates/*.tmpl.html")
 	router.Use(gin.Logger())
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.tmpl.html", nil)
+	router.GET("/main", func(c *gin.Context) {
+		fmt.Printf("===>corePath\n")
+		c.HTML(200, "./templates/index.tmpl.html", nil)
+	})
+
+	router.GET("/get/", func(c *gin.Context) {
+		fmt.Printf("===>cssPath\n")
+		//ext := c.Param("ext")
+		//fileName := c.Param("fileName")
+		//file := fmt.Sprintf("./sources/%s/%s", ext, fileName)
+		//fmt.Printf("get Ext fileName = %s\n", file)
+		c.HTML(200, "./templates/sources/css/bootstrap.min.css", nil)
 	})
 
 	router.Run(":" + port)

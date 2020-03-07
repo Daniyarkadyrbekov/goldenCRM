@@ -1,1 +1,1 @@
-web: bin/goldenCRM.git
+web: bin/goldenCRM

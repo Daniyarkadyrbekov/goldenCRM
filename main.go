@@ -3,10 +3,18 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
+	"html/template"
 
 	"github.com/gin-gonic/gin"
 )
+
+var tpl = template.Must(template.ParseFiles([]string{"pages/index.html", "pages/base_header.html"}...))
+
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	tpl.Execute(w, nil)
+}
 
 func main() {
 	port := os.Getenv("PORT")
@@ -16,21 +24,18 @@ func main() {
 	}
 
 	router := gin.New()
-	//router.LoadHTMLGlob("templates/*.tmpl.html")
+	router.LoadHTMLGlob("pages/*.html")
 	router.Use(gin.Logger())
 
-	router.GET("/main", func(c *gin.Context) {
-		fmt.Printf("===>corePath\n")
-		c.HTML(200, "./templates/index.tmpl.html", nil)
+	router.GET("/", func(c *gin.Context) {
+		c.HTML(200, "index.html", nil)
 	})
 
-	router.GET("/get/", func(c *gin.Context) {
-		fmt.Printf("===>cssPath\n")
-		//ext := c.Param("ext")
-		//fileName := c.Param("fileName")
-		//file := fmt.Sprintf("./sources/%s/%s", ext, fileName)
-		//fmt.Printf("get Ext fileName = %s\n", file)
-		c.HTML(200, "./templates/sources/css/bootstrap.min.css", nil)
+	router.GET("/sources/:ext/:fileName", func(c *gin.Context) {
+		ext := c.Param("ext")
+		fileName := c.Param("fileName")
+		file := fmt.Sprintf("pages/sources/%s/%s", ext, fileName)
+		c.File(file)
 	})
 
 	router.Run(":" + port)

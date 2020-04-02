@@ -7,7 +7,22 @@ CURRENT_DIR := $(shell pwd)
 PROJECT := $(subst ${GOPATH}/src/,,$(shell pwd))
 
 .PHONY: all
-all: mod test
+all: mod test local-web
+
+.PHONY: start-local
+start-local: build local
+
+.PHONY: build
+build:
+	go build -o bin/goldenCRM -v .
+
+.PHONY: local
+local:
+	heroku local web
+
+.PHONY: build
+build:
+	go build -o bin/goldenCRM -v .
 
 .PHONY: mod
 mod:

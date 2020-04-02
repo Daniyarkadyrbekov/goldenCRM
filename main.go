@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
-	"html/template"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +30,13 @@ func main() {
 	router.Use(gin.Logger())
 
 	router.GET("/", func(c *gin.Context) {
-		c.HTML(200, "index.html", nil)
+		var b bytes.Buffer
+		foo := bufio.NewWriter(&b)
+		err := tpl.ExecuteTemplate(foo, "base_header", "")
+		if err != nil {
+			c.Abort()
+		}
+		c.String(200, b.String())
 	})
 
 	router.GET("/sources/:ext/:fileName", func(c *gin.Context) {

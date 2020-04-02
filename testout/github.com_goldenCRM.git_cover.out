@@ -1,6 +1,11 @@
 mode: atomic
-github.com/goldenCRM.git/main.go:11.13,15.16 3 0
-github.com/goldenCRM.git/main.go:19.2,22.39 3 0
-github.com/goldenCRM.git/main.go:26.2,26.24 1 0
-github.com/goldenCRM.git/main.go:15.16,17.3 1 0
-github.com/goldenCRM.git/main.go:22.39,24.3 1 0
+github.com/goldenCRM.git/main.go:17.59,19.2 1 0
+github.com/goldenCRM.git/main.go:21.13,24.16 2 0
+github.com/goldenCRM.git/main.go:28.2,32.39 4 0
+github.com/goldenCRM.git/main.go:42.2,42.61 1 0
+github.com/goldenCRM.git/main.go:49.2,49.24 1 0
+github.com/goldenCRM.git/main.go:24.16,26.3 1 0
+github.com/goldenCRM.git/main.go:32.39,36.17 4 0
+github.com/goldenCRM.git/main.go:39.3,39.28 1 0
+github.com/goldenCRM.git/main.go:36.17,38.4 1 0
+github.com/goldenCRM.git/main.go:42.61,47.3 4 0

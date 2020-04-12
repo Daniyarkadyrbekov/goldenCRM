@@ -7,7 +7,7 @@ CURRENT_DIR := $(shell pwd)
 PROJECT := $(subst ${GOPATH}/src/,,$(shell pwd))
 
 .PHONY: all
-all: mod test local-web
+all: mod test start-local
 
 .PHONY: start-local
 start-local: build local

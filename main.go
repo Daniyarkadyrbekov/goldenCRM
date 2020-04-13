@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"log"
@@ -19,6 +20,17 @@ import (
 //}
 
 func main() {
+
+	t, err := template.ParseFiles("pages/templates/base_header.html", "pages/templates/index.html")
+	if err != nil {
+		panic(err)
+	}
+
+	//err = t.ExecuteTemplate(os.Stdout, "index.html", nil)
+	//if err != nil {
+	//	panic(err)
+	//}
+
 	cfg := zap.NewDevelopmentConfig()
 	cfg.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
 	l, err := cfg.Build()
@@ -56,8 +68,16 @@ func main() {
 		//if err != nil {
 		//	c.Abort()
 		//}
+		var b bytes.Buffer
+		err := t.ExecuteTemplate(&b, "base_header.html", nil)
+		if err != nil {
+			c.Abort()
+		}
 		//c.String(200, b.String())
-		c.HTML(200, "index.html", gin.H{})
+
+		c.HTML(200, "index.html", gin.H{
+			"base_header": b.String(),
+		})
 	})
 
 	router.GET("/sources/:ext/:fileName", func(c *gin.Context) {

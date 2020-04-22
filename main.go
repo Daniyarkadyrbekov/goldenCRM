@@ -7,14 +7,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/goldenCRM.git/models/user"
+
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
-
-type User struct {
-	Name string
-}
 
 func main() {
 
@@ -48,11 +46,14 @@ func main() {
 	}
 
 	router.GET("/", func(c *gin.Context) {
+		u := user.New("Кадырбеков", "Данияр")
+
 		c.HTML(200, "index.html", gin.H{
-			"user": "userName",
+			"user": &u,
 		})
 	})
 
+	//TODO: route static files with static router method
 	router.GET("/sources/:ext/:fileName", func(c *gin.Context) {
 		ext := c.Param("ext")
 		fileName := c.Param("fileName")

@@ -1,6 +1,5 @@
-{{ template "base_header.html"}}
-{{ template "base_navbar.html"}}
-
+{{ template "base_header" . }}
+{{ template "base_navbar" . }}
 
 <div class="row">
     <div class="col-md-1">.col-md-1</div>
@@ -29,5 +28,4 @@
     <div class="col-md-6">.col-md-6</div>
     <div class="col-md-6">.col-md-6</div>
 </div>
-
-{{ template "base_bottom.html"}}
+{{ template "base_bottom" . }}

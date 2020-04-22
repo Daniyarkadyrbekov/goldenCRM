@@ -1,0 +1,5 @@
+=== RUN   TestUserConstructor
+--- PASS: TestUserConstructor (0.01s)
+PASS
+coverage: 100.0% of statements
+ok  	github.com/goldenCRM.git/models/user	0.042s	coverage: 100.0% of statements

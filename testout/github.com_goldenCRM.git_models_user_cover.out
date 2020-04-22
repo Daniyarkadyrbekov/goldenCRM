@@ -1,0 +1,4 @@
+mode: atomic
+github.com/goldenCRM.git/models/user/user.go:8.13,10.2 1 1
+github.com/goldenCRM.git/models/user/user.go:18.43,24.2 1 1000
+github.com/goldenCRM.git/models/user/user.go:26.36,28.2 1 1000

@@ -2,4 +2,4 @@
 --- PASS: Test_Main (0.00s)
 PASS
 coverage: 0.0% of statements
-ok  	github.com/goldenCRM.git	1.037s	coverage: 0.0% of statements
+ok  	github.com/goldenCRM.git	0.136s	coverage: 0.0% of statements

@@ -9,17 +9,16 @@ import (
 
 func TestUserConstructor(t *testing.T) {
 
-	sep := "_"
 	generatedIDs := make(map[int64]struct{})
 
 	for i := 0; i < 1000; i++ {
 		iterStr := strconv.Itoa(i)
-		u := New(iterStr, sep+iterStr)
+		u := New(iterStr, iterStr)
 
 		_, ok := generatedIDs[u.id]
 		require.False(t, ok)
 		generatedIDs[u.id] = struct{}{}
 
-		require.Equal(t, iterStr+sep+iterStr, u.GetFullName())
+		require.Equal(t, iterStr+" "+iterStr, u.GetFullName())
 	}
 }

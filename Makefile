@@ -20,6 +20,11 @@ build:
 local:
 	heroku local web
 
+.PHONY: deploy
+deploy:
+	git push heroku master
+
+
 .PHONY: mod
 mod:
 	rm -rf vendor

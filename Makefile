@@ -14,7 +14,7 @@ build-local: build local
 
 .PHONY: build
 build:
-	go build -o bin/goldenCRM -v .
+	go build -o bin/goldenCRM.git -v .
 
 .PHONY: local
 local:

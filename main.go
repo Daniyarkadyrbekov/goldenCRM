@@ -7,10 +7,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/goldenCRM.git/models/user"
-
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gin-gonic/gin"
+	"github.com/goldenCRM.git/models/user"
 	"go.uber.org/zap"
 )
 

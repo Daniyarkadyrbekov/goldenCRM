@@ -14,6 +14,7 @@ build-local: build local
 
 .PHONY: build
 build:
+	rice embed-go
 	go build -o bin/goldenCRM.git -v .
 
 .PHONY: local

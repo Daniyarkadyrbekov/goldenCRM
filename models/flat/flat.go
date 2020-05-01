@@ -11,6 +11,7 @@ type Flat struct {
 	isCorner    bool
 	flatType    string
 	description string
+	pictureURLs []string
 }
 
 type flatState string

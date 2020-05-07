@@ -17,18 +17,6 @@
                         найти
                     </button>
                 </form>
-{{/*                <form class="form-inline my-2 my-lg-0">*/}}
-{{/*                    <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="modal" data-target="#addModal">*/}}
-{{/*                        добавить*/}}
-{{/*                    </button>*/}}
-{{/*                    {{ template "modal_add" . }}*/}}
-{{/*                </form>*/}}
-{{/*                <form class="form-inline my-2 my-lg-0">*/}}
-{{/*                    <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="modal" data-target="#searchModal">*/}}
-{{/*                        найти*/}}
-{{/*                    </button>*/}}
-{{/*                    {{ template "modal_search" . }}*/}}
-{{/*                </form>*/}}
                 <ul class="navbar-nav mr-auto">
                 </ul>
                 <ul class="nav justify-content-end">
@@ -46,14 +34,14 @@
             </div>
         </nav>
         <div class="collapse" id="navbarCollapseSearch">
-            <div class="bg-dark p-4">
-                <h5 class="text-white h4">Найти</h5>
+            <div class="p-4">
+                <h5 class="h4">Найти</h5>
                 {{template "base_nav_flat_form" .}}
             </div>
         </div>
         <div class="collapse" id="navbarCollapseAdd">
-            <div class="bg-dark p-4">
-                <h5 class="text-white h4">Добавить</h5>
+            <div class="p-4">
+                <h5 class="h4">Добавить</h5>
                 {{template "base_nav_flat_form" .}}
             </div>
         </div>

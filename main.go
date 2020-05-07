@@ -4,14 +4,22 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
+	"time"
+
+	"github.com/goldenCRM.git/lib/storage/mock"
 
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gin-gonic/gin"
-	"github.com/goldenCRM.git/models/user"
+	"github.com/goldenCRM.git/lib/models"
 	"go.uber.org/zap"
 )
+
+func init() {
+	rand.Seed(time.Now().Unix())
+}
 
 func main() {
 
@@ -28,6 +36,7 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
+	database := mock.New()
 	router := gin.New()
 	router.Use(gin.Logger())
 
@@ -45,7 +54,7 @@ func main() {
 	}
 
 	router.GET("/", func(c *gin.Context) {
-		u := user.New("Кадырбеков", "Данияр")
+		u := models.NewUser("Кадырбеков", "Данияр")
 
 		c.HTML(200, "index.html", gin.H{
 			"user": &u,
@@ -58,6 +67,17 @@ func main() {
 		fileName := c.Param("fileName")
 		file := fmt.Sprintf("pages/sources/%s/%s", ext, fileName)
 		c.File(file)
+	})
+
+	router.POST("/flat/new", func(c *gin.Context) {
+		err := database.Add(models.NewFlat("",
+			"", 1, 1,
+			models.Euro, 1, false,
+			"", "", []string{""}, ""))
+		if err != nil {
+			c.String(500, "failed")
+		}
+		c.String(200, "success")
 	})
 
 	err = router.Run(":" + port)

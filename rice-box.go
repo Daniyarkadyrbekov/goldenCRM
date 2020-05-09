@@ -23,9 +23,9 @@ func init() {
 	}
 	file4 := &embedded.EmbeddedFile{
 		Filename:    "base_nav_flat_form.html",
-		FileModTime: time.Unix(1588826370, 0),
+		FileModTime: time.Unix(1589025448, 0),
 
-		Content: string("{{ define \"base_nav_flat_form\" }}\n    <form>\n        <div class=\"form-row\">\n            <div class=\"form-group col-md-6\">\n                <label for=\"inputEmail4\">Email</label>\n                <input type=\"email\" class=\"form-control\" id=\"inputEmail4\">\n            </div>\n            <div class=\"form-group col-md-6\">\n                <label for=\"inputPassword4\">Password</label>\n                <input type=\"password\" class=\"form-control\" id=\"inputPassword4\">\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label for=\"inputAddress\">Address</label>\n            <input type=\"text\" class=\"form-control\" id=\"inputAddress\" placeholder=\"1234 Main St\">\n        </div>\n        <div class=\"form-group\">\n            <label for=\"inputAddress2\">Address 2</label>\n            <input type=\"text\" class=\"form-control\" id=\"inputAddress2\" placeholder=\"Apartment, studio, or floor\">\n        </div>\n        <div class=\"form-row\">\n            <div class=\"form-group col-md-6\">\n                <label for=\"inputCity\">City</label>\n                <input type=\"text\" class=\"form-control\" id=\"inputCity\">\n            </div>\n            <div class=\"form-group col-md-4\">\n                <label for=\"inputState\">State</label>\n                <select id=\"inputState\" class=\"form-control\">\n                    <option selected>Choose...</option>\n                    <option>...</option>\n                </select>\n            </div>\n            <div class=\"form-group col-md-2\">\n                <label for=\"inputZip\">Zip</label>\n                <input type=\"text\" class=\"form-control\" id=\"inputZip\">\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input\" type=\"checkbox\" id=\"gridCheck\">\n                <label class=\"form-check-label\" for=\"gridCheck\">\n                    Check me out\n                </label>\n            </div>\n        </div>\n        <button type=\"submit\" class=\"btn btn-primary\">Sign in</button>\n    </form>\n{{end}}"),
+		Content: string("{{ define \"base_nav_flat_form\" }}\n    <form id=\"my-form\" action=\"/flat/new\" method=\"POST\">\n        <div class=\"form-row\">\n            <div class=\"form-group col-md-6\">\n                <label for=\"inputEmail4\">Email</label>\n                <input type=\"email\" class=\"form-control\" id=\"inputEmail4\">\n            </div>\n            <div class=\"form-group col-md-6\">\n                <label for=\"inputPassword4\">Password</label>\n                <input type=\"password\" class=\"form-control\" id=\"inputPassword4\">\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label for=\"inputAddress\">Address</label>\n            <input type=\"text\" class=\"form-control\" id=\"inputAddress\" placeholder=\"1234 Main St\">\n        </div>\n        <div class=\"form-group\">\n            <label for=\"inputAddress2\">Address 2</label>\n            <input type=\"text\" class=\"form-control\" id=\"inputAddress2\" placeholder=\"Apartment, studio, or floor\">\n        </div>\n        <div class=\"form-row\">\n            <div class=\"form-group col-md-6\">\n                <label for=\"inputCity\">City</label>\n                <input type=\"text\" class=\"form-control\" id=\"inputCity\">\n            </div>\n            <div class=\"form-group col-md-4\">\n                <label for=\"inputState\">State</label>\n                <select id=\"inputState\" class=\"form-control\">\n                    <option selected>Choose...</option>\n                    <option>...</option>\n                </select>\n            </div>\n            <div class=\"form-group col-md-2\">\n                <label for=\"inputZip\">Zip</label>\n                <input type=\"text\" class=\"form-control\" id=\"inputZip\">\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"form-check\">\n                <input class=\"form-check-input\" type=\"checkbox\" id=\"gridCheck\">\n                <label class=\"form-check-label\" for=\"gridCheck\">\n                    Check me out\n                </label>\n            </div>\n        </div>\n        <button type=\"submit\" class=\"btn btn-primary\">Sign in</button>\n    </form>\n{{end}}"),
 	}
 	file5 := &embedded.EmbeddedFile{
 		Filename:    "base_navbar.html",
@@ -41,15 +41,15 @@ func init() {
 	}
 	file7 := &embedded.EmbeddedFile{
 		Filename:    "index.html",
-		FileModTime: time.Unix(1587909560, 0),
+		FileModTime: time.Unix(1589026849, 0),
 
-		Content: string("{{ template \"base_header\" . }}\n{{ template \"base_navbar\" . }}\n\n<table class=\"table\">\n    <thead>\n    <tr>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Улица</th>\n        <th scope=\"col\">дом</th>\n        <th scope=\"col\">строение</th>\n        <th scope=\"col\">номер Квартиры</th>\n        <th scope=\"col\">состояние</th>\n        <th scope=\"col\">этаж</th>\n        <th scope=\"col\">угловая</th>\n        <th scope=\"col\">тип</th>\n        <th scope=\"col\">описание</th>\n    </tr>\n    </thead>\n    <tbody>\n    <tr>\n        <th scope=\"row\">1</th>\n        <td>Mark</td>\n        <td>Otto</td>\n        <td>@mdo</td>\n    </tr>\n    <tr>\n        <th scope=\"row\">2</th>\n        <td>Jacob</td>\n        <td>Thornton</td>\n        <td>@fat</td>\n    </tr>\n    <tr>\n        <th scope=\"row\">3</th>\n        <td>Larry</td>\n        <td>the Bird</td>\n        <td>@twitter</td>\n    </tr>\n    </tbody>\n</table>\n{{ template \"base_bottom\" . }}"),
+		Content: string("{{ template \"base_header\" . }}\n{{ template \"base_navbar\" . }}\n\n<table class=\"table\">\n    <thead>\n    <tr>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Улица</th>\n        <th scope=\"col\">дом</th>\n        <th scope=\"col\">строение</th>\n        <th scope=\"col\">номер Квартиры</th>\n        <th scope=\"col\">состояние</th>\n        <th scope=\"col\">этаж</th>\n        <th scope=\"col\">угловая</th>\n        <th scope=\"col\">тип</th>\n        <th scope=\"col\">описание</th>\n        <th scope=\"col\">владелец</th>\n    </tr>\n    </thead>\n\n{{/*    ID          int64*/}}\n{{/*    Street      string*/}}\n{{/*    Home        string*/}}\n{{/*    Structure   uint*/}}\n{{/*    FlatNumber  uint*/}}\n{{/*    State       flatState*/}}\n{{/*    Floor       uint*/}}\n{{/*    IsCorner    bool*/}}\n{{/*    FlatType    string*/}}\n{{/*    Description string*/}}\n{{/*    PictureURLs []string*/}}\n{{/*    Owner       string*/}}\n    <tbody>\n    {{range .flats}}\n        <tr>\n            <td>{{.ID}}</td>\n            <td>{{.Street}}</td>\n            <td>{{.Home}}</td>\n            <td>{{.Structure}}</td>\n            <td>{{.FlatNumber}}</td>\n            <td>{{.State}}</td>\n            <td>{{.Floor}}</td>\n            <td>{{.IsCorner}}</td>\n            <td>{{.FlatType}}</td>\n            <td>{{.Description}}</td>\n            <td>{{.Owner}}</td>\n        </tr>\n    {{end}}\n    </tbody>\n</table>\n{{ template \"base_bottom\" . }}"),
 	}
 
 	// define dirs
 	dir1 := &embedded.EmbeddedDir{
 		Filename:   "",
-		DirModTime: time.Unix(1588828393, 0),
+		DirModTime: time.Unix(1589026849, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file2, // "base_bottom.html"
 			file3, // "base_header.html"
@@ -67,7 +67,7 @@ func init() {
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`pages/templates`, &embedded.EmbeddedBox{
 		Name: `pages/templates`,
-		Time: time.Unix(1588828393, 0),
+		Time: time.Unix(1589026849, 0),
 		Dirs: map[string]*embedded.EmbeddedDir{
 			"": dir1,
 		},

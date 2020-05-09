@@ -55,9 +55,11 @@ func main() {
 
 	router.GET("/", func(c *gin.Context) {
 		u := models.NewUser("Кадырбеков", "Данияр")
+		flats := database.List()
 
 		c.HTML(200, "index.html", gin.H{
-			"user": &u,
+			"user":  &u,
+			"flats": flats,
 		})
 	})
 

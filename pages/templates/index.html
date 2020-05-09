@@ -14,27 +14,38 @@
         <th scope="col">угловая</th>
         <th scope="col">тип</th>
         <th scope="col">описание</th>
+        <th scope="col">владелец</th>
     </tr>
     </thead>
+
+{{/*    ID          int64*/}}
+{{/*    Street      string*/}}
+{{/*    Home        string*/}}
+{{/*    Structure   uint*/}}
+{{/*    FlatNumber  uint*/}}
+{{/*    State       flatState*/}}
+{{/*    Floor       uint*/}}
+{{/*    IsCorner    bool*/}}
+{{/*    FlatType    string*/}}
+{{/*    Description string*/}}
+{{/*    PictureURLs []string*/}}
+{{/*    Owner       string*/}}
     <tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-    </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>the Bird</td>
-        <td>@twitter</td>
-    </tr>
+    {{range .flats}}
+        <tr>
+            <td>{{.ID}}</td>
+            <td>{{.Street}}</td>
+            <td>{{.Home}}</td>
+            <td>{{.Structure}}</td>
+            <td>{{.FlatNumber}}</td>
+            <td>{{.State}}</td>
+            <td>{{.Floor}}</td>
+            <td>{{.IsCorner}}</td>
+            <td>{{.FlatType}}</td>
+            <td>{{.Description}}</td>
+            <td>{{.Owner}}</td>
+        </tr>
+    {{end}}
     </tbody>
 </table>
 {{ template "base_bottom" . }}

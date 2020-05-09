@@ -3,45 +3,45 @@ package models
 import "math/rand"
 
 type Flat struct {
-	id          int64
-	street      string
-	home        string
-	structure   uint
-	flatNumber  uint
-	state       flatState
-	floor       uint
-	isCorner    bool
-	flatType    string
-	description string
-	pictureURLs []string
-	owner       string
+	ID          int64
+	Street      string
+	Home        string
+	Structure   uint
+	FlatNumber  uint
+	State       flatState
+	Floor       uint
+	IsCorner    bool
+	FlatType    string
+	Description string
+	PictureURLs []string
+	Owner       string
 }
 
-func NewFlat(street string,
-	home string,
-	structure uint,
-	flatNumber uint,
-	state flatState,
-	floor uint,
-	isCorner bool,
-	flatType string,
-	description string,
-	pictureURLs []string,
-	owner string) Flat {
+func NewFlat(Street string,
+	Home string,
+	Structure uint,
+	FlatNumber uint,
+	State flatState,
+	Floor uint,
+	IsCorner bool,
+	FlatType string,
+	Description string,
+	PictureURLs []string,
+	Owner string) Flat {
 
 	return Flat{
-		id:          rand.Int63(),
-		street:      street,
-		home:        home,
-		structure:   structure,
-		flatNumber:  flatNumber,
-		state:       state,
-		floor:       floor,
-		isCorner:    isCorner,
-		flatType:    flatType,
-		description: description,
-		pictureURLs: pictureURLs,
-		owner:       owner,
+		ID:          rand.Int63(),
+		Street:      Street,
+		Home:        Home,
+		Structure:   Structure,
+		FlatNumber:  FlatNumber,
+		State:       State,
+		Floor:       Floor,
+		IsCorner:    IsCorner,
+		FlatType:    FlatType,
+		Description: Description,
+		PictureURLs: PictureURLs,
+		Owner:       Owner,
 	}
 }
 

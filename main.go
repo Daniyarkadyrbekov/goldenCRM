@@ -72,10 +72,11 @@ func main() {
 	})
 
 	router.POST("/flat/new", func(c *gin.Context) {
-		err := database.Add(models.NewFlat("",
-			"", 1, 1,
-			models.Euro, 1, false,
-			"", "", []string{""}, ""))
+		flat, err := getFlatFromTestForm(c)
+		if err != nil {
+			c.String(500, "failed")
+		}
+		err = database.Add(flat)
 		if err != nil {
 			c.String(500, "failed")
 		}
@@ -86,6 +87,29 @@ func main() {
 	if err != nil {
 		l.Error("closing server", zap.Error(err))
 	}
+}
+
+func getFlatFromTestForm(c *gin.Context) (models.Flat, error) {
+	//models.Flat{
+	//	ID:          0,
+	//	Street:      "",
+	//	Home:        "",
+	//	Structure:   0,
+	//	FlatNumber:  0,
+	//	State:       "",
+	//	Floor:       0,
+	//	IsCorner:    false,
+	//	FlatType:    "",
+	//	Description: "",
+	//	PictureURLs: nil,
+	//	Owner:       "",
+	//}
+	flat := models.NewFlat(c.PostForm("inputStreet"),
+		"", 1, 1,
+		models.Euro, 1, false,
+		"", "", []string{""}, "")
+
+	return flat, nil
 }
 
 func initResources(l *zap.Logger, r *gin.Engine, templates *rice.Box) error {

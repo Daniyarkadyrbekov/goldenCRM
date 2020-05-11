@@ -15,6 +15,6 @@ func (m *Mock) Add(flat models.Flat) error {
 	return nil
 }
 
-func (m *Mock) List() []models.Flat {
-	return m.flats
+func (m *Mock) List() ([]models.Flat, error) {
+	return m.flats, nil
 }

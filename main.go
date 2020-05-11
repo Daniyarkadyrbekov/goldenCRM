@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"log"
@@ -8,6 +9,10 @@ import (
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/goldenCRM.git/lib/storage"
+	"github.com/goldenCRM.git/lib/storage/postgres"
+	"github.com/spf13/viper"
 
 	"github.com/goldenCRM.git/lib/storage/mock"
 
@@ -36,7 +41,29 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	database := mock.New()
+	var database storage.Storage
+	if false {
+		database = mock.New()
+	} else {
+		v := viper.New()
+		v.SetDefault("host", "0.0.0.0")
+		v.SetDefault("port", "5432")
+		v.SetDefault("name", "files")
+		v.SetDefault("user", "admin")
+		v.SetDefault("password", "123")
+		v.SetDefault("ssl-mode", "disable")
+		v.SetDefault("schema", "schema")
+		v.SetDefault("health-check", time.Second)
+		v.SetDefault("max-connections", 10)
+		conf, err := postgres.NewConfig(v)
+		if err != nil {
+			l.Fatal("get config for postgres", zap.Error(err))
+		}
+		database, err = postgres.New(context.Background(), conf)
+		if err != nil {
+			l.Fatal("creating postgres", zap.Error(err))
+		}
+	}
 	router := gin.New()
 	router.Use(gin.Logger())
 
@@ -55,7 +82,11 @@ func main() {
 
 	router.GET("/", func(c *gin.Context) {
 		u := models.NewUser("Кадырбеков", "Данияр")
-		flats := database.List()
+		flats, err := database.List()
+		if err != nil {
+			l.Error("getting list err", zap.Error(err))
+			c.String(500, "getting list err")
+		}
 
 		c.HTML(200, "index.html", gin.H{
 			"user":  &u,
@@ -74,10 +105,12 @@ func main() {
 	router.POST("/flat/new", func(c *gin.Context) {
 		flat, err := getFlatFromTestForm(c)
 		if err != nil {
+			l.Error("getting flat form testForm", zap.Error(err))
 			c.String(500, "failed")
 		}
 		err = database.Add(flat)
 		if err != nil {
+			l.Error("adding flat to db err", zap.Error(err))
 			c.String(500, "failed")
 		}
 		c.String(200, "success")

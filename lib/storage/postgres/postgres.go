@@ -37,13 +37,13 @@ type Postgres struct {
 	pool *pgxpool.Pool
 }
 
-func New(ctx context.Context, conf *Config) (*Postgres, error) {
+func New(ctx context.Context, connUrl string) (*Postgres, error) {
 
-	if err := runMigrations(conf); err != nil {
+	if err := runMigrations(connUrl); err != nil {
 		return nil, errors.Wrap(err, "failed to run migrations")
 	}
 
-	pgxConf, err := pgxpool.ParseConfig(conf.PoolConnURL())
+	pgxConf, err := pgxpool.ParseConfig(connUrl)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to parse connection URL")
 	}
@@ -62,6 +62,7 @@ func (p *Postgres) Add(flat models.Flat) error {
 	_, err := p.pool.Exec(context.Background(), _QuerySaveFlat, flat.ID, flat.Street)
 	return err
 }
+
 func (p *Postgres) List() ([]models.Flat, error) {
 
 	flatsRows, err := p.pool.Query(context.Background(), _QueryGetFlats)
@@ -90,9 +91,9 @@ func readFlats(rows pgx.Rows) ([]models.Flat, error) {
 	return flats, nil
 }
 
-func runMigrations(conf *Config) error {
+func runMigrations(url string) error {
 
-	m, err := getMigrations(conf)
+	m, err := getMigrations(url)
 	if err != nil {
 		return errors.Wrap(err, "failed to get migrations")
 	}
@@ -104,7 +105,7 @@ func runMigrations(conf *Config) error {
 	return nil
 }
 
-func getMigrations(conf *Config) (*migrate.Migrate, error) {
+func getMigrations(url string) (*migrate.Migrate, error) {
 
 	s := bindata.Resource(migrations.AssetNames(),
 		func(name string) (data []byte, err error) {
@@ -117,7 +118,7 @@ func getMigrations(conf *Config) (*migrate.Migrate, error) {
 		return nil, errors.Wrap(err, "failed to create migrations data driver")
 	}
 
-	m, err := migrate.NewWithSourceInstance("migrations", d, conf.ConnURL())
+	m, err := migrate.NewWithSourceInstance("migrations", d, url)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create migrations instance")
 	}

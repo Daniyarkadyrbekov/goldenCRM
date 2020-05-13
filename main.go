@@ -14,8 +14,6 @@ import (
 	"github.com/goldenCRM.git/lib/storage/postgres"
 	"github.com/spf13/viper"
 
-	"github.com/goldenCRM.git/lib/storage/mock"
-
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gin-gonic/gin"
 	"github.com/goldenCRM.git/lib/models"
@@ -42,8 +40,13 @@ func main() {
 	}
 
 	var database storage.Storage
-	if false {
-		database = mock.New()
+	databaseUrl := os.Getenv("DATABASE_URL")
+	if databaseUrl != "" {
+		l.Info("using databaseUrl from env")
+		database, err = postgres.New(context.Background(), databaseUrl)
+		if err != nil {
+			l.Fatal("creating postgres", zap.Error(err))
+		}
 	} else {
 		v := viper.New()
 		v.SetDefault("host", "0.0.0.0")
@@ -59,7 +62,7 @@ func main() {
 		if err != nil {
 			l.Fatal("get config for postgres", zap.Error(err))
 		}
-		database, err = postgres.New(context.Background(), conf)
+		database, err = postgres.New(context.Background(), conf.ConnURL())
 		if err != nil {
 			l.Fatal("creating postgres", zap.Error(err))
 		}

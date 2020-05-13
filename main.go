@@ -26,6 +26,7 @@ func init() {
 
 func main() {
 
+	//added go version go1.14
 	cfg := zap.NewDevelopmentConfig()
 	cfg.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
 	l, err := cfg.Build()

@@ -74,6 +74,14 @@ func (c *Config) Addr() string {
 	return net.JoinHostPort(c.Host, c.Port)
 }
 
+func (c *Config) ConnURL() string {
+	return c.URL(false, true).String()
+}
+
+func (c *Config) ConnURLWithoutSchema() string {
+	return c.URL(false, false).String()
+}
+
 func (c *Config) URL(poll, withSchema bool) *url.URL {
 
 	q := url.Values{}

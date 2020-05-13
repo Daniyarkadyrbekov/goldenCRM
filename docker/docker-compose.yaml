@@ -5,34 +5,20 @@ version: '3.4'
 services:
   postgres:
     image: postgres:9.6
-    container_name: plat-files-postgres
+    container_name: plat-goldenCRM-postgres
     restart: always
     ports:
       - "5432:5432"
     volumes:
       - type: volume
-        source: plat-files-pgdata
+        source: plat-goldenCRM-data
         target: /data
     environment:
       - POSTGRES_DB=files
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=123
       - POSTGRES_INITDB_ARGS=--data-checksums
       - PGDATA=/data
 
-  minio:
-    image: minio/minio
-    container_name: plat-files-minio
-    command: "minio server --address '0.0.0.0:9000' /data"
-    ports:
-      - 9000:9000
-    volumes:
-      - "./s3data:/data"
-    environment:
-      - MINIO_REGION=us-east-1
-      - MINIO_ACCESS_KEY=Q13I02OJK516D1WUZA1D
-      - MINIO_SECRET_KEY=6hgLieG6tMQlDqrLBJZ3RPAaJ9dyYYHrUDONpajM
-      - MINIO_HTTP_TRACE=/dev/stdout
-
 volumes:
-  plat-files-pgdata:
+  plat-goldenCRM-data:

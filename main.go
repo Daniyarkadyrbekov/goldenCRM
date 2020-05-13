@@ -52,7 +52,7 @@ func main() {
 		v.SetDefault("user", "admin")
 		v.SetDefault("password", "123")
 		v.SetDefault("ssl-mode", "disable")
-		v.SetDefault("schema", "schema")
+		v.SetDefault("schema", "")
 		v.SetDefault("health-check", time.Second)
 		v.SetDefault("max-connections", 10)
 		conf, err := postgres.NewConfig(v)

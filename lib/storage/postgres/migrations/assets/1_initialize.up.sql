@@ -9,6 +9,5 @@ CREATE TABLE flats (
   is_corner boolean,
   flat_type text,
   description text,
-  home smallint,
-  owner text,
+  owner text
 );

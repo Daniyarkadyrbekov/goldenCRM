@@ -1,1 +1,1 @@
-drop table flats;
+DROP TABLE flats;

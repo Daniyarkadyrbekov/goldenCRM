@@ -3,13 +3,12 @@ package postgres
 import (
 	"context"
 
-	"github.com/jackc/pgx/v4"
-
 	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	bindata "github.com/golang-migrate/migrate/v4/source/go_bindata"
 	"github.com/goldenCRM.git/lib/models"
 	"github.com/goldenCRM.git/lib/storage/postgres/migrations"
+	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/pkg/errors"
 )
@@ -24,14 +23,6 @@ const (
 		INSERT INTO flats (id, street)
 		VALUES ($1, $2)`
 )
-
-func init() {
-	// Stub for call postgres.init()
-	// Fix error: 'database driver: unknown driver postgres (forgotten import?)'
-	if postgres.DefaultMigrationsTable == "" {
-		panic("fatal")
-	}
-}
 
 type Postgres struct {
 	pool *pgxpool.Pool
@@ -69,10 +60,12 @@ func (p *Postgres) List() ([]models.Flat, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	flats, err := readFlats(flatsRows)
 	if err != nil {
 		return nil, err
 	}
+
 	return flats, nil
 }
 

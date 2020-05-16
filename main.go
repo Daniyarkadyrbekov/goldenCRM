@@ -2,22 +2,24 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"html/template"
 	"log"
 	"math/rand"
-	"net/http"
 	"os"
 	"path/filepath"
 	"time"
 
-	"github.com/goldenCRM.git/lib/storage"
+	"github.com/goldenCRM.git/lib/handlers"
+
+	"github.com/pkg/errors"
+
 	"github.com/goldenCRM.git/lib/storage/postgres"
 	"github.com/spf13/viper"
 
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gin-gonic/gin"
 	"github.com/goldenCRM.git/lib/models"
+	"github.com/goldenCRM.git/lib/storage"
 	"go.uber.org/zap"
 )
 
@@ -33,57 +35,28 @@ func main() {
 	if err != nil {
 		log.Fatal("error creating log", err)
 	}
+
 	l.Info("starting service")
+
+	database, err := getDatabase(l)
+	if err != nil {
+		l.Fatal(err.Error())
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
 
-	var database storage.Storage
-	databaseUrl := os.Getenv("DATABASE_URL")
-	if databaseUrl != "" {
-		l.Info("using databaseUrl from env")
-		database, err = postgres.New(context.Background(), databaseUrl)
-		if err != nil {
-			l.Fatal("creating postgres", zap.Error(err))
-		}
-	} else {
-		v := viper.New()
-		v.SetDefault("host", "0.0.0.0")
-		v.SetDefault("port", "5432")
-		v.SetDefault("name", "files")
-		v.SetDefault("user", "admin")
-		v.SetDefault("password", "123")
-		v.SetDefault("ssl-mode", "disable")
-		v.SetDefault("schema", "")
-		v.SetDefault("health-check", time.Second)
-		v.SetDefault("max-connections", 10)
-		conf, err := postgres.NewConfig(v)
-		if err != nil {
-			l.Fatal("get config for postgres", zap.Error(err))
-		}
-		database, err = postgres.New(context.Background(), conf.ConnURL())
-		if err != nil {
-			l.Fatal("creating postgres", zap.Error(err))
-		}
-	}
 	router := gin.New()
 	router.Use(gin.Logger())
 
-	tmplBox, err := rice.FindBox("pages/templates")
-	if err != nil {
-		l.Fatal("can't find templates box", zap.Error(err))
-	}
-	if tmplBox == nil {
-		l.Fatal("tmplBox is nil")
-	}
-
-	err = initResources(l, router, tmplBox)
+	err = initResources(l, router)
 	if err != nil {
 		l.Fatal("can't init resources", zap.Error(err))
 	}
 
+	//TODO: make main handler
 	router.GET("/", func(c *gin.Context) {
 		u := models.NewUser("Кадырбеков", "Данияр")
 		flats, err := database.List()
@@ -98,36 +71,8 @@ func main() {
 		})
 	})
 
-	//TODO: route static files with static router method
-	router.GET("/sources/:ext/:fileName", func(c *gin.Context) {
-		ext := c.Param("ext")
-		fileName := c.Param("fileName")
-		file := fmt.Sprintf("pages/sources/%s/%s", ext, fileName)
-		c.File(file)
-	})
-
-	router.GET("/flat/info", func(c *gin.Context) {
-		params := c.Request.URL.Query()
-		ID, ok := params["ID"]
-		if !ok || len(ID) != 1 {
-			c.String(500, fmt.Sprintf("params = %v\n", params))
-		}
-		c.String(200, "Stub page with info of flat with ID = "+ID[0])
-	})
-
-	router.POST("/flat/new", func(c *gin.Context) {
-		flat, err := getFlatFromTestForm(c)
-		if err != nil {
-			l.Error("getting flat form testForm", zap.Error(err))
-			c.String(500, "failed")
-		}
-		err = database.Add(flat)
-		if err != nil {
-			l.Error("adding flat to db err", zap.Error(err))
-			c.String(500, "failed")
-		}
-		c.Redirect(http.StatusFound, "/")
-	})
+	router.GET("/flat/info", handlers.FlatInfo(l, database))
+	router.POST("/flat/new", handlers.FlatNew(l, database))
 
 	err = router.Run(":" + port)
 	if err != nil {
@@ -135,80 +80,106 @@ func main() {
 	}
 }
 
-func getFlatFromTestForm(c *gin.Context) (models.Flat, error) {
-	//models.Flat{
-	//	ID:          0,
-	//	Street:      "",
-	//	Home:        "",
-	//	Structure:   0,
-	//	FlatNumber:  0,
-	//	State:       "",
-	//	Floor:       0,
-	//	IsCorner:    false,
-	//	FlatType:    "",
-	//	Description: "",
-	//	PictureURLs: nil,
-	//	Owner:       "",
-	//}
-	flat := models.NewFlat(c.PostForm("inputStreet"),
-		"", 1, 1,
-		models.Euro, 1, false,
-		"", "", []string{""}, "")
+func getBoxes() (tmplBox, sourcesBox *rice.Box, err error) {
 
-	return flat, nil
+	tmplBox, err = rice.FindBox("pages/templates")
+	if err != nil {
+		err = errors.Wrap(err, "can't find templates box")
+		return
+	}
+
+	sourcesBox, err = rice.FindBox("pages/sources")
+	if err != nil {
+		err = errors.Wrap(err, "can't find sources box")
+		return
+	}
+
+	if tmplBox == nil || sourcesBox == nil {
+		err = errors.New("tmplBox is nil")
+		return
+	}
+
+	return
 }
 
-func initResources(l *zap.Logger, r *gin.Engine, templates *rice.Box) error {
-	l.Debug("init resources")
-	if templates != nil {
-		l.Info("Serving embedded templates")
-		var tmplt *template.Template
-		err := templates.Walk("/", func(path string, info os.FileInfo, err error) error {
-			path = filepath.Base(path)
-			if err != nil {
-				l.Error("WERR", zap.Error(err))
-				return err
-			}
-			if info.IsDir() {
-				return nil
-			}
+func getDatabase(l *zap.Logger) (database storage.Storage, err error) {
 
-			templateString, err := templates.String(path)
-			if err != nil {
-				return err
-			}
-			if len(templateString) < 1 {
-				return nil
-			}
+	databaseUrl := os.Getenv("DATABASE_URL")
+	if databaseUrl != "" {
+		database, err = postgres.New(context.Background(), databaseUrl)
+		if err != nil {
+			err = errors.Wrap(err, "creating postgres conn")
+			return
+		}
+	} else {
+		v := viper.New()
+		v.SetDefault("host", "0.0.0.0")
+		v.SetDefault("port", "5432")
+		v.SetDefault("name", "files")
+		v.SetDefault("user", "admin")
+		v.SetDefault("password", "123")
+		v.SetDefault("ssl-mode", "disable")
+		v.SetDefault("schema", "")
+		v.SetDefault("health-check", time.Second)
+		v.SetDefault("max-connections", 10)
+		conf, errNew := postgres.NewConfig(v)
+		if errNew != nil {
+			err = errors.Wrap(errNew, "get config for postgres")
+			return
+		}
+		database, errNew = postgres.New(context.Background(), conf.ConnURL())
+		if errNew != nil {
+			err = errors.Wrap(err, "creating local postgres conn")
+			return
+		}
+	}
 
-			l.Debug("template New", zap.String("path", path))
-			if tmplt == nil {
-				tmplt, err = template.New(path).Parse(templateString)
-			} else {
-				tmplt, err = tmplt.New(path).Parse(templateString)
-			}
+	return
+}
 
+func initResources(l *zap.Logger, r *gin.Engine) error {
+	templates, sources, err := getBoxes()
+	if err != nil {
+		return errors.Wrap(err, "getting boxes err")
+	}
+
+	var tmplt *template.Template
+	err = templates.Walk("/", func(path string, info os.FileInfo, err error) error {
+		path = filepath.Base(path)
+		if err != nil {
+			l.Error("WERR", zap.Error(err))
+			return err
+		}
+		if info.IsDir() {
 			return nil
-		})
+		}
+
+		templateString, err := templates.String(path)
 		if err != nil {
 			return err
 		}
-		if tmplt == nil {
-			l.Fatal("Templates are nil")
+		if len(templateString) < 1 {
+			return nil
 		}
-		r.SetHTMLTemplate(tmplt)
-	} else {
-		l.Info("Serving local templates")
-		r.LoadHTMLGlob("templates/*")
-	}
 
-	//if statics != nil {
-	//	l.Info("Serving embedded statics")
-	//	r.StaticFS("/static", statics.HTTPBox())
-	//} else {
-	//	l.Info("Serving local statics")
-	//	r.Static("/static", "static")
-	//}
+		l.Debug("template New", zap.String("path", path))
+		if tmplt == nil {
+			tmplt, err = template.New(path).Parse(templateString)
+		} else {
+			tmplt, err = tmplt.New(path).Parse(templateString)
+		}
+
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	if tmplt == nil {
+		l.Fatal("Templates are nil")
+	}
+	r.SetHTMLTemplate(tmplt)
+
+	r.StaticFS("/sources", sources.HTTPBox())
 
 	return nil
 }

@@ -11,9 +11,9 @@ func init() {
 	// define files
 	file2 := &embedded.EmbeddedFile{
 		Filename:    "base_bottom.html",
-		FileModTime: time.Unix(1588322637, 0),
+		FileModTime: time.Unix(1589633657, 0),
 
-		Content: string("{{ define \"base_bottom\" }}\n    <!-- Optional JavaScript -->\n    <!-- jQuery first, then Popper.js, then Bootstrap JS -->\n    <script src=\"https://code.jquery.com/jquery-3.4.1.slim.min.js\" integrity=\"sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n\" crossorigin=\"anonymous\"></script>\n    <script src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js\" integrity=\"sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo\" crossorigin=\"anonymous\"></script>\n    <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js\" integrity=\"sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6\" crossorigin=\"anonymous\"></script>\n</body>\n</html>\n{{ end }}"),
+		Content: string("{{ define \"base_bottom\" }}\n    <!-- Optional JavaScript -->\n    <!-- jQuery first, then Popper.js, then Bootstrap JS -->\n    <script src=\"https://code.jquery.com/jquery-3.4.1.slim.min.js\" integrity=\"sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n\" crossorigin=\"anonymous\"></script>\n    <script src=\"https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js\" integrity=\"sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo\" crossorigin=\"anonymous\"></script>\n    <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js\" integrity=\"sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6\" crossorigin=\"anonymous\"></script>\n    <script src=\"/sources/js/custom.js\"></script>\n</body>\n</html>\n{{ end }}"),
 	}
 	file3 := &embedded.EmbeddedFile{
 		Filename:    "base_header.html",
@@ -41,15 +41,15 @@ func init() {
 	}
 	file7 := &embedded.EmbeddedFile{
 		Filename:    "index.html",
-		FileModTime: time.Unix(1589030066, 0),
+		FileModTime: time.Unix(1589634130, 0),
 
-		Content: string("{{ template \"base_header\" . }}\n{{ template \"base_navbar\" . }}\n\n<table class=\"table table-hover table-bordered\">\n    <thead>\n    <tr>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Улица</th>\n        <th scope=\"col\">дом</th>\n        <th scope=\"col\">строение</th>\n        <th scope=\"col\">номер Квартиры</th>\n        <th scope=\"col\">состояние</th>\n        <th scope=\"col\">этаж</th>\n        <th scope=\"col\">угловая</th>\n        <th scope=\"col\">тип</th>\n        <th scope=\"col\">описание</th>\n        <th scope=\"col\">владелец</th>\n    </tr>\n    </thead>\n    <tbody>\n    {{range .flats}}\n        <tr>\n            <td>{{.ID}}</td>\n            <td>{{.Street}}</td>\n            <td>{{.Home}}</td>\n            <td>{{.Structure}}</td>\n            <td>{{.FlatNumber}}</td>\n            <td>{{.State}}</td>\n            <td>{{.Floor}}</td>\n            <td>{{.IsCorner}}</td>\n            <td>{{.FlatType}}</td>\n            <td>{{.Description}}</td>\n            <td>{{.Owner}}</td>\n        </tr>\n    {{end}}\n    </tbody>\n</table>\n{{ template \"base_bottom\" . }}\n"),
+		Content: string("{{ template \"base_header\" . }}\n{{ template \"base_navbar\" . }}\n\n{{/*<div class=\"container\">*/}}\n{{/*    <table class='table table-bordered table-condensed table-striped table-hover'>*/}}\n{{/*        <tr><th>Name</th><th>Email</th><th>Country</th></tr>*/}}\n{{/*        <tr class=\"table-row\" data-href=\"http://tutorialsplane.com\"><td>Jhohn</td><td>jhone@gmail.com</td><td>USA</td></tr>*/}}\n{{/*        <tr class=\"table-row\" data-href=\"http://tutorialsplane.com\"><td>Kelly</td><td>kelly@gmail.com</td><td>USA</td></tr>*/}}\n{{/*        <tr class=\"table-row\" data-href=\"http://tutorialsplane.com\"><td>Kamana</td><td>kamna@gmail.com</td><td>India</td></tr>*/}}\n{{/*        <tr class=\"table-row\" data-href=\"http://tutorialsplane.com\"><td>Anay</td><td>anay@gmail.com</td><td>Canada</td></tr>*/}}\n{{/*    </table>*/}}\n{{/*</div>*/}}\n\n<table class=\"table table-bordered table-condensed table-striped table-hover\">\n    <thead>\n    <tr>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Улица</th>\n        <th scope=\"col\">дом</th>\n        <th scope=\"col\">строение</th>\n        <th scope=\"col\">номер Квартиры</th>\n        <th scope=\"col\">состояние</th>\n        <th scope=\"col\">этаж</th>\n        <th scope=\"col\">угловая</th>\n        <th scope=\"col\">тип</th>\n        <th scope=\"col\">описание</th>\n        <th scope=\"col\">владелец</th>\n    </tr>\n    </thead>\n    <tbody>\n    {{range .flats}}\n        <tr class=\"table-row\" data-href=\"/flat/info?ID={{.ID}}\">\n            <td>{{.ID}}</td>\n            <td>{{.Street}}</td>\n            <td>{{.Home}}</td>\n            <td>{{.Structure}}</td>\n            <td>{{.FlatNumber}}</td>\n            <td>{{.State}}</td>\n            <td>{{.Floor}}</td>\n            <td>{{.IsCorner}}</td>\n            <td>{{.FlatType}}</td>\n            <td>{{.Description}}</td>\n            <td>{{.Owner}}</td>\n        </tr>\n    {{end}}\n    </tbody>\n</table>\n{{ template \"base_bottom\" . }}\n"),
 	}
 
 	// define dirs
 	dir1 := &embedded.EmbeddedDir{
 		Filename:   "",
-		DirModTime: time.Unix(1589036196, 0),
+		DirModTime: time.Unix(1589634130, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file2, // "base_bottom.html"
 			file3, // "base_header.html"
@@ -67,7 +67,7 @@ func init() {
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`pages/templates`, &embedded.EmbeddedBox{
 		Name: `pages/templates`,
-		Time: time.Unix(1589036196, 0),
+		Time: time.Unix(1589634130, 0),
 		Dirs: map[string]*embedded.EmbeddedDir{
 			"": dir1,
 		},

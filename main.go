@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
 	"path/filepath"
 	"time"
@@ -26,7 +27,6 @@ func init() {
 
 func main() {
 
-	//added go version go1.14
 	cfg := zap.NewDevelopmentConfig()
 	cfg.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
 	l, err := cfg.Build()
@@ -106,6 +106,15 @@ func main() {
 		c.File(file)
 	})
 
+	router.GET("/flat/info", func(c *gin.Context) {
+		params := c.Request.URL.Query()
+		ID, ok := params["ID"]
+		if !ok || len(ID) != 1 {
+			c.String(500, fmt.Sprintf("params = %v\n", params))
+		}
+		c.String(200, "Stub page with info of flat with ID = "+ID[0])
+	})
+
 	router.POST("/flat/new", func(c *gin.Context) {
 		flat, err := getFlatFromTestForm(c)
 		if err != nil {
@@ -117,7 +126,7 @@ func main() {
 			l.Error("adding flat to db err", zap.Error(err))
 			c.String(500, "failed")
 		}
-		c.String(200, "success")
+		c.Redirect(http.StatusFound, "/")
 	})
 
 	err = router.Run(":" + port)

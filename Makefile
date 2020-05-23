@@ -13,7 +13,7 @@ all: mod test build-local
 build-local: build local
 
 .PHONY: build
-build:
+build: static
 	rice embed-go
 	go build -o bin/goldenCRM.git -v .
 

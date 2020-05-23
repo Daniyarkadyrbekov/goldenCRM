@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -26,7 +27,7 @@ func FlatInfo(l *zap.Logger, database storage.Storage) func(c *gin.Context) {
 
 func FlatNew(l *zap.Logger, database storage.Storage) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		flat, err := getFlatFromTestForm(c)
+		flat, err := getFlatFromForm(c)
 		if err != nil {
 			l.Error("getting flat form testForm", zap.Error(err))
 			c.String(500, "failed")
@@ -40,18 +41,34 @@ func FlatNew(l *zap.Logger, database storage.Storage) func(c *gin.Context) {
 	}
 }
 
-func getFlatFromTestForm(c *gin.Context) (models.Flat, error) {
-	flat := models.NewFlat(c.PostForm("inputStreet"),
+func getFlatFromForm(c *gin.Context) (models.Flat, error) {
+	address, ok := c.GetPostForm("address")
+	if !ok {
+		return models.Flat{}, errors.New("no address in form")
+	}
+
+	flat := models.NewFlat(
 		"",
-		1,
-		1,
-		models.Euro,
-		1,
+		"",
+		address,
+		0,
+		0,
+		0,
+		0,
+		0,
+		"",
+		0,
+		0,
+		0,
+		"",
+		"",
+		"",
+		0,
+		0,
 		false,
 		"",
-		"",
-		[]string{""},
-		"")
+		[]string{},
+		map[string]string{})
 
 	return flat, nil
 }

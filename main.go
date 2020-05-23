@@ -102,15 +102,18 @@ func getBoxes() (tmplBox, sourcesBox *rice.Box, err error) {
 	return
 }
 
-func getDatabase(l *zap.Logger) (database storage.Storage, err error) {
+func getDatabase(l *zap.Logger) (storage.Storage, error) {
+
+	var database storage.Storage
 
 	databaseUrl := os.Getenv("DATABASE_URL")
 	if databaseUrl != "" {
-		database, err = postgres.New(context.Background(), databaseUrl)
+		db, err := postgres.New(context.Background(), databaseUrl)
 		if err != nil {
 			err = errors.Wrap(err, "creating postgres conn")
-			return
+			return nil, err
 		}
+		database = db
 	} else {
 		v := viper.New()
 		v.SetDefault("host", "0.0.0.0")
@@ -122,19 +125,19 @@ func getDatabase(l *zap.Logger) (database storage.Storage, err error) {
 		v.SetDefault("schema", "")
 		v.SetDefault("health-check", time.Second)
 		v.SetDefault("max-connections", 10)
-		conf, errNew := postgres.NewConfig(v)
-		if errNew != nil {
-			err = errors.Wrap(errNew, "get config for postgres")
-			return
+		conf, err := postgres.NewConfig(v)
+		if err != nil {
+			err = errors.Wrap(err, "get config for postgres")
+			return nil, err
 		}
-		database, errNew = postgres.New(context.Background(), conf.ConnURL())
-		if errNew != nil {
+		database, err = postgres.New(context.Background(), conf.ConnURL())
+		if err != nil {
 			err = errors.Wrap(err, "creating local postgres conn")
-			return
+			return nil, err
 		}
 	}
 
-	return
+	return database, nil
 }
 
 func initResources(l *zap.Logger, r *gin.Engine) error {

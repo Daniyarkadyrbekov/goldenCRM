@@ -1,68 +1,9 @@
 {{ define "base_nav_flat_form" }}
-{{/*    <form id="my-form" action="/flat/new" method="POST">*/}}
-{{/*        <div class="form-row">*/}}
-{{/*            <div class="form-group col-md-6">*/}}
-{{/*                <label for="inputEmail4">Email</label>*/}}
-{{/*                <input type="email" class="form-control" id="inputEmail4">*/}}
-{{/*            </div>*/}}
-{{/*            <div class="form-group col-md-6">*/}}
-{{/*                <label for="inputPassword4">Password</label>*/}}
-{{/*                <input type="password" class="form-control" id="inputPassword4">*/}}
-{{/*            </div>*/}}
-{{/*        </div>*/}}
-{{/*        <div class="form-group">*/}}
-{{/*            <label for="inputAddress">Address</label>*/}}
-{{/*            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">*/}}
-{{/*        </div>*/}}
-{{/*        <div class="form-group">*/}}
-{{/*            <label for="inputAddress2">Address 2</label>*/}}
-{{/*            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">*/}}
-{{/*        </div>*/}}
-{{/*        <div class="form-row">*/}}
-{{/*            <div class="form-group col-md-6">*/}}
-{{/*                <label for="inputCity">City</label>*/}}
-{{/*                <input type="text" class="form-control" id="inputCity">*/}}
-{{/*            </div>*/}}
-{{/*            <div class="form-group col-md-4">*/}}
-{{/*                <label for="inputState">State</label>*/}}
-{{/*                <select id="inputState" class="form-control">*/}}
-{{/*                    <option selected>Choose...</option>*/}}
-{{/*                    <option>...</option>*/}}
-{{/*                </select>*/}}
-{{/*            </div>*/}}
-{{/*            <div class="form-group col-md-2">*/}}
-{{/*                <label for="inputZip">Zip</label>*/}}
-{{/*                <input type="text" class="form-control" id="inputZip">*/}}
-{{/*            </div>*/}}
-{{/*        </div>*/}}
-{{/*        <div class="form-group">*/}}
-{{/*            <div class="form-check">*/}}
-{{/*                <input class="form-check-input" type="checkbox" id="gridCheck">*/}}
-{{/*                <label class="form-check-label" for="gridCheck">*/}}
-{{/*                    Check me out*/}}
-{{/*                </label>*/}}
-{{/*            </div>*/}}
-{{/*        </div>*/}}
-{{/*        <button type="submit" class="btn btn-primary">Sign in</button>*/}}
-{{/*    </form>*/}}
-
-{{/*ID          int64*/}}
-{{/*Street      string*/}}
-{{/*Home        string*/}}
-{{/*Structure   uint*/}}
-{{/*FlatNumber  uint*/}}
-{{/*State       flatState*/}}
-{{/*Floor       uint*/}}
-{{/*IsCorner    bool*/}}
-{{/*FlatType    string*/}}
-{{/*Description string*/}}
-{{/*PictureURLs []string*/}}
-{{/*Owner       string*/}}
 <form id="my-form" action="/flat/new" method="POST">
     <div class="form-row">
         <div class="form-group col-md-3">
-            <label for="inputStreet">Улица</label>
-            <input type="text" class="form-control" id="inputStreet" name="inputStreet">
+            <label for="address">Адрес</label>
+            <input type="text" class="form-control" id="address" name="address">
         </div>
         <div class="form-group col-md-1">
             <label for="inputHome">Дом</label>
@@ -94,16 +35,6 @@
             <label for="inputOther">Описание</label>
             <input type="text" class="form-control" id="inputOther">
         </div>
-    </div>
-    <div class="form-row">
-        <input id="input-id" type="file" class="file" data-preview-file-type="text" >
-{{/*        <div class="form-group col-md-4">*/}}
-{{/*            <label for="exampleFormControlFile1">Example file input</label>*/}}
-{{/*            <input id="input-b1" name="input-b1" type="file" class="file" data-browse-on-zone-click="true">*/}}
-{{/*        </div>*/}}
-{{/*        <label class="btn btn-default">*/}}
-{{/*            Browse <input type="file" hidden>*/}}
-{{/*        </label>*/}}
     </div>
     <button type="submit" class="btn btn-primary">Добавить</button>
 </form>

@@ -16,11 +16,11 @@ import (
 const (
 	_QueryGetFlats = `
 		SELECT
-		id, street
+		id, address
 		FROM flats
-		LIMIT 5000`
+		LIMIT 500`
 	_QuerySaveFlat = `
-		INSERT INTO flats (id, street)
+		INSERT INTO flats (id, address)
 		VALUES ($1, $2)`
 )
 
@@ -50,7 +50,7 @@ func New(ctx context.Context, connUrl string) (*Postgres, error) {
 }
 
 func (p *Postgres) Add(flat models.Flat) error {
-	_, err := p.pool.Exec(context.Background(), _QuerySaveFlat, flat.ID, flat.Street)
+	_, err := p.pool.Exec(context.Background(), _QuerySaveFlat, flat.ID, flat.Address)
 	return err
 }
 
@@ -73,7 +73,7 @@ func readFlats(rows pgx.Rows) ([]models.Flat, error) {
 	flats := make([]models.Flat, 0)
 	for rows.Next() {
 		flat := models.Flat{}
-		err := rows.Scan(&flat.ID, &flat.Street)
+		err := rows.Scan(&flat.ID, &flat.Address)
 		if err != nil {
 			return nil, err
 		}

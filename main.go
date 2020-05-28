@@ -56,7 +56,7 @@ func main() {
 		l.Fatal("can't init resources", zap.Error(err))
 	}
 
-	//TODO: make main handler
+	//TODO: make main handler |
 	router.GET("/", func(c *gin.Context) {
 		u := models.NewUser("Кадырбеков", "Данияр")
 		flats, err := database.List()

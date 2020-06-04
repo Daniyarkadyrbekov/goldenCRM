@@ -42,33 +42,126 @@ func FlatNew(l *zap.Logger, database storage.Storage) func(c *gin.Context) {
 }
 
 func getFlatFromForm(c *gin.Context) (models.Flat, error) {
-	address, ok := c.GetPostForm("address")
+
+	/*name="InputArea"
+	name="InputAddress"
+	name="InputLandMark"
+	name="InputHomeNumber"
+	name="InputFlatNumber"
+	name="InputPriceMin"
+	name="InputPriceMax"
+	name="InputRoomsCount"
+	name="InputRoomsType"
+	name="InputFloor"
+	name="InputFloor"
+	name="InputFlatType"
+	name="InputSquare"
+	name="InputToilet"
+	name="InputToiletCount"
+	name="InputBuildYear"
+	name="inputIsCorner"
+	name="InputDescription"*/
+
+	area, ok := c.GetPostForm("InputArea")
 	if !ok {
-		return models.Flat{}, errors.New("no address in form")
+		return models.Flat{}, errors.New("no InputArea in form")
 	}
 
-	flat := models.NewFlat(
-		"",
-		"",
+	address, ok := c.GetPostForm("InputAddress")
+	if !ok {
+		return models.Flat{}, errors.New("no InputAddress in form")
+	}
+	landMark, ok := c.GetPostForm("InputLandMark")
+	if !ok {
+		return models.Flat{}, errors.New("no InputArea in form")
+	}
+	homeNumber, ok := c.GetPostForm("InputHomeNumber")
+	if !ok {
+		return models.Flat{}, errors.New("no InputHomeNumber in form")
+	}
+	flatNumber, ok := c.GetPostForm("InputFlatNumber")
+	if !ok {
+		return models.Flat{}, errors.New("no InputFlatNumber in form")
+	}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//inputArea, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+
+	flat, err := models.NewFlat(
+		area,
+		landMark,
 		address,
-		0,
-		0,
-		0,
-		0,
-		0,
-		"",
-		0,
-		0,
-		0,
+		homeNumber,
+		flatNumber,
 		"",
 		"",
 		"",
-		0,
-		0,
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
 		false,
 		"",
 		[]string{},
 		map[string]string{})
+
+	if err != nil {
+		return models.Flat{}, err
+	}
 
 	return flat, nil
 }

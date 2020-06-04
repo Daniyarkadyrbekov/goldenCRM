@@ -1,5 +1,12 @@
 package models
 
+import (
+	"database/sql"
+	"strconv"
+
+	"github.com/pkg/errors"
+)
+
 //Телефон (+7 по базе должно высвечиваться автоматически)
 //Район
 //Адрес
@@ -17,39 +24,9 @@ package models
 //Угловая или нет как у тебя стоит с галочкой так и оставим
 //Описание
 
-type Area string
-
-const (
-	Abayskiy      Area = "Абайский"
-	AlFarabiskiy  Area = "Аль-Фарабийский"
-	Enbekshinskiy Area = "Енбекшинский"
-	Karatauskiy   Area = "Каратауский"
-)
-
-type state string
-
-const (
-	EuroState     state = "евро"
-	VeryGoodState state = "класс"
-	GoodState     state = "хороший"
-	MiddleState   state = "средний"
-	CosmeticState state = "косметический"
-	BlackState    state = "черновой"
-	NoneState     state = "без ремонта"
-)
-
-type toilet string
-
-const (
-	SeparatedToilet toilet = "Раздельный"
-	OutSideToilet   toilet = "Во дворе"
-	NoneToilet      toilet = "нет"
-	JoinedToilet    toilet = "Совмещенный"
-)
-
 type Flat struct {
 	ID           int64
-	Area         Area
+	Area         string
 	LandMark     string
 	Address      string
 	HomeNumber   int
@@ -57,13 +34,13 @@ type Flat struct {
 	PriceMin     int
 	PriceMax     int
 	RoomsCount   int
-	RoomsType    string //TODO: addType
+	RoomsType    sql.NullString
 	Floor        int
 	FloorsCount  int
 	Square       int
-	FlatType     string //TODO: addType
-	State        state
-	Toilet       toilet
+	FlatType     string
+	State        string
+	Toilet       string
 	ToiletCount  int
 	BuildYear    int
 	IsCorner     bool
@@ -72,49 +49,84 @@ type Flat struct {
 	PhoneNumbers map[string]string
 }
 
-func NewFlat(Area Area,
+func NewFlat(Area string,
 	LandMark string,
 	Address string,
-	HomeNumber int,
-	FlatNumber int,
-	PriceMin int,
-	PriceMax int,
-	RoomsCount int,
+	HomeNumberStr string,
+	FlatNumberStr string,
+	PriceMinStr string,
+	PriceMaxStr string,
+	RoomsCountStr string,
 	RoomsType string,
-	Floor int,
-	FloorsCount int,
-	Square int,
+	FloorStr string,
+	FloorsCountStr string,
+	SquareStr string,
 	FlatType string,
-	State state,
-	Toilet toilet,
-	ToiletCount int,
-	BuildYear int,
+	State string,
+	Toilet string,
+	ToiletCountStr string,
+	BuildYearStr string,
 	IsCorner bool,
 	Description string,
 	PictureURLs []string,
-	PhoneNumbers map[string]string) Flat {
+	PhoneNumbers map[string]string) (Flat, error) {
+
+	intsMap, err := getInts(
+		map[string]string{
+			"HomeNumber":  HomeNumberStr,
+			"FlatNumber":  FlatNumberStr,
+			"PriceMin":    PriceMinStr,
+			"PriceMax":    PriceMaxStr,
+			"RoomsCount":  RoomsCountStr,
+			"Floor":       FloorStr,
+			"FloorsCount": FloorsCountStr,
+			"Square":      SquareStr,
+			"ToiletCount": ToiletCountStr,
+			"BuildYear":   BuildYearStr,
+		})
+	if err != nil {
+		return Flat{}, err
+	}
+
+	roomsType := sql.NullString{}
+	roomsType.String = RoomsType
+	roomsType.Valid = RoomsType != ""
 
 	return Flat{
 		Area:         Area,
 		LandMark:     LandMark,
 		Address:      Address,
-		HomeNumber:   HomeNumber,
-		FlatNumber:   FlatNumber,
-		PriceMin:     PriceMin,
-		PriceMax:     PriceMax,
-		RoomsCount:   RoomsCount,
-		RoomsType:    RoomsType,
-		Floor:        Floor,
-		FloorsCount:  FloorsCount,
-		Square:       Square,
+		HomeNumber:   intsMap["HomeNumber"],
+		FlatNumber:   intsMap["FlatNumber"],
+		PriceMin:     intsMap["PriceMin"],
+		PriceMax:     intsMap["PriceMax"],
+		RoomsCount:   intsMap["RoomsCount"],
+		RoomsType:    roomsType,
+		Floor:        intsMap["Floor"],
+		FloorsCount:  intsMap["FloorsCount"],
+		Square:       intsMap["Square"],
 		FlatType:     FlatType,
 		State:        State,
 		Toilet:       Toilet,
-		ToiletCount:  ToiletCount,
-		BuildYear:    BuildYear,
+		ToiletCount:  intsMap["ToiletCount"],
+		BuildYear:    intsMap["BuildYear"],
 		IsCorner:     IsCorner,
 		Description:  Description,
 		PictureURLs:  PictureURLs,
 		PhoneNumbers: PhoneNumbers,
+	}, nil
+}
+
+func getInts(mp map[string]string) (map[string]int, error) {
+	result := make(map[string]int)
+	for key, val := range mp {
+		strInt, err := strconv.Atoi(val)
+
+		if err != nil {
+			return nil, errors.Wrap(err, "error getting "+key)
+		}
+		result[key] = strInt
 	}
+
+	return result, nil
 }

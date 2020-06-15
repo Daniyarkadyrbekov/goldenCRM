@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"strconv"
 
+	"github.com/jinzhu/gorm"
+
 	"github.com/pkg/errors"
 )
 
@@ -25,6 +27,7 @@ import (
 //Описание
 
 type Flat struct {
+	gorm.Model
 	ID           int64
 	Area         string
 	LandMark     string

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"html/template"
 	"log"
 	"math/rand"
@@ -9,17 +8,15 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/goldenCRM.git/lib/handlers"
-
-	"github.com/pkg/errors"
-
-	"github.com/goldenCRM.git/lib/storage/postgres"
-	"github.com/spf13/viper"
+	"github.com/jinzhu/gorm"
 
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gin-gonic/gin"
+	"github.com/goldenCRM.git/lib/handlers"
 	"github.com/goldenCRM.git/lib/models"
-	"github.com/goldenCRM.git/lib/storage"
+	"github.com/goldenCRM.git/lib/storage/postgres"
+	"github.com/pkg/errors"
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
@@ -59,11 +56,12 @@ func main() {
 	//TODO: make main handler |
 	router.GET("/", func(c *gin.Context) {
 		u := models.NewUser("Кадырбеков", "Данияр")
-		flats, err := database.List()
-		if err != nil {
-			l.Error("getting list err", zap.Error(err))
-			c.String(500, "getting list err")
-		}
+		flats := make([]models.Flat, 0)
+		database.Find(&flats)
+		//if err != nil {
+		//	l.Error("getting list err", zap.Error(err))
+		//	c.String(500, "getting list err")
+		//}
 
 		c.HTML(200, "index.html", gin.H{
 			"user":  &u,
@@ -102,13 +100,13 @@ func getBoxes() (tmplBox, sourcesBox *rice.Box, err error) {
 	return
 }
 
-func getDatabase(l *zap.Logger) (storage.Storage, error) {
+func getDatabase(l *zap.Logger) (*gorm.DB, error) {
 
-	var database storage.Storage
+	var database *gorm.DB
 
 	databaseUrl := os.Getenv("DATABASE_URL")
 	if databaseUrl != "" {
-		db, err := postgres.New(context.Background(), databaseUrl)
+		db, err := gorm.Open("postgres", database) //postgres.New(context.Background(), databaseUrl)
 		if err != nil {
 			err = errors.Wrap(err, "creating postgres conn")
 			return nil, err
@@ -130,7 +128,7 @@ func getDatabase(l *zap.Logger) (storage.Storage, error) {
 			err = errors.Wrap(err, "get config for postgres")
 			return nil, err
 		}
-		database, err = postgres.New(context.Background(), conf.ConnURL())
+		database, err = gorm.Open("postgres", conf.ConnURL()) //postgres.New(context.Background(), conf.ConnURL())
 		if err != nil {
 			err = errors.Wrap(err, "creating local postgres conn")
 			return nil, err

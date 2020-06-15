@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/goldenCRM.git/lib/storage"
+	"github.com/jinzhu/gorm"
 
 	"github.com/goldenCRM.git/lib/models"
 
@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func FlatInfo(l *zap.Logger, database storage.Storage) func(c *gin.Context) {
+func FlatInfo(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		params := c.Request.URL.Query()
 		ID, ok := params["ID"]
@@ -25,18 +25,18 @@ func FlatInfo(l *zap.Logger, database storage.Storage) func(c *gin.Context) {
 	}
 }
 
-func FlatNew(l *zap.Logger, database storage.Storage) func(c *gin.Context) {
+func FlatNew(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		flat, err := getFlatFromForm(c)
 		if err != nil {
 			l.Error("getting flat form testForm", zap.Error(err))
 			c.String(500, "failed")
 		}
-		err = database.Add(flat)
-		if err != nil {
-			l.Error("adding flat to db err", zap.Error(err))
-			c.String(500, "failed")
-		}
+		database.Create(&flat)
+		//if err != nil {
+		//	l.Error("adding flat to db err", zap.Error(err))
+		//	c.String(500, "failed")
+		//}
 		c.Redirect(http.StatusFound, "/")
 	}
 }
@@ -62,27 +62,27 @@ func getFlatFromForm(c *gin.Context) (models.Flat, error) {
 	name="inputIsCorner"
 	name="InputDescription"*/
 
-	area, ok := c.GetPostForm("InputArea")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
+	//area, ok := c.GetPostForm("InputArea")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
 
 	address, ok := c.GetPostForm("InputAddress")
 	if !ok {
 		return models.Flat{}, errors.New("no InputAddress in form")
 	}
-	landMark, ok := c.GetPostForm("InputLandMark")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	homeNumber, ok := c.GetPostForm("InputHomeNumber")
-	if !ok {
-		return models.Flat{}, errors.New("no InputHomeNumber in form")
-	}
-	flatNumber, ok := c.GetPostForm("InputFlatNumber")
-	if !ok {
-		return models.Flat{}, errors.New("no InputFlatNumber in form")
-	}
+	//landMark, ok := c.GetPostForm("InputLandMark")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputArea in form")
+	//}
+	//homeNumber, ok := c.GetPostForm("InputHomeNumber")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputHomeNumber in form")
+	//}
+	//flatNumber, ok := c.GetPostForm("InputFlatNumber")
+	//if !ok {
+	//	return models.Flat{}, errors.New("no InputFlatNumber in form")
+	//}
 	//inputArea, ok := c.GetPostForm("InputArea")
 	//if !ok {
 	//	return models.Flat{}, errors.New("no InputArea in form")
@@ -137,25 +137,25 @@ func getFlatFromForm(c *gin.Context) (models.Flat, error) {
 	//}
 
 	flat, err := models.NewFlat(
-		area,
-		landMark,
+		"area",
+		"landMark",
 		address,
-		homeNumber,
-		flatNumber,
+		"1",
+		"1",
+		"1",
+		"1",
+		"1",
 		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
+		"1",
+		"1",
+		"1",
+		"1",
+		"1",
+		"1",
+		"1",
+		"1",
 		false,
-		"",
+		"1",
 		[]string{},
 		map[string]string{})
 

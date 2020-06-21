@@ -28,28 +28,28 @@ import (
 
 type Flat struct {
 	gorm.Model
-	ID           int64
-	Area         string
-	LandMark     string
-	Address      string
-	HomeNumber   int
-	FlatNumber   int
-	PriceMin     int
-	PriceMax     int
-	RoomsCount   int
-	RoomsType    sql.NullString
-	Floor        int
-	FloorsCount  int
-	Square       int
-	FlatType     string
-	State        string
-	Toilet       string
-	ToiletCount  int
-	BuildYear    int
-	IsCorner     bool
-	Description  string
-	PictureURLs  []string
-	PhoneNumbers map[string]string
+	FlatID      int `gorm:"AUTO_INCREMENT"`
+	Area        string
+	LandMark    string
+	Address     string
+	HomeNumber  int
+	FlatNumber  int
+	PriceMin    int
+	PriceMax    int
+	RoomsCount  int
+	RoomsType   sql.NullString
+	Floor       int
+	FloorsCount int
+	Square      int
+	FlatType    string
+	State       string
+	Toilet      string
+	ToiletCount int
+	BuildYear   int
+	IsCorner    bool
+	Description string
+	//PictureURLs  []string
+	//PhoneNumbers map[string]string
 }
 
 func NewFlat(Area string,
@@ -96,27 +96,27 @@ func NewFlat(Area string,
 	roomsType.Valid = RoomsType != ""
 
 	return Flat{
-		Area:         Area,
-		LandMark:     LandMark,
-		Address:      Address,
-		HomeNumber:   intsMap["HomeNumber"],
-		FlatNumber:   intsMap["FlatNumber"],
-		PriceMin:     intsMap["PriceMin"],
-		PriceMax:     intsMap["PriceMax"],
-		RoomsCount:   intsMap["RoomsCount"],
-		RoomsType:    roomsType,
-		Floor:        intsMap["Floor"],
-		FloorsCount:  intsMap["FloorsCount"],
-		Square:       intsMap["Square"],
-		FlatType:     FlatType,
-		State:        State,
-		Toilet:       Toilet,
-		ToiletCount:  intsMap["ToiletCount"],
-		BuildYear:    intsMap["BuildYear"],
-		IsCorner:     IsCorner,
-		Description:  Description,
-		PictureURLs:  PictureURLs,
-		PhoneNumbers: PhoneNumbers,
+		Area:        Area,
+		LandMark:    LandMark,
+		Address:     Address,
+		HomeNumber:  intsMap["HomeNumber"],
+		FlatNumber:  intsMap["FlatNumber"],
+		PriceMin:    intsMap["PriceMin"],
+		PriceMax:    intsMap["PriceMax"],
+		RoomsCount:  intsMap["RoomsCount"],
+		RoomsType:   roomsType,
+		Floor:       intsMap["Floor"],
+		FloorsCount: intsMap["FloorsCount"],
+		Square:      intsMap["Square"],
+		FlatType:    FlatType,
+		State:       State,
+		Toilet:      Toilet,
+		ToiletCount: intsMap["ToiletCount"],
+		BuildYear:   intsMap["BuildYear"],
+		IsCorner:    IsCorner,
+		Description: Description,
+		//PictureURLs:  PictureURLs,
+		//PhoneNumbers: PhoneNumbers,
 	}, nil
 }
 

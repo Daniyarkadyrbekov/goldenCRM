@@ -21,7 +21,7 @@ func FlatInfo(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		if !ok || len(ID) != 1 {
 			c.String(500, fmt.Sprintf("params = %v\n", params))
 		}
-		c.String(200, "Stub page with info of flat with ID = "+ID[0])
+		c.String(200, "Stub page with info of flat with FlatID = "+ID[0])
 	}
 }
 
@@ -33,10 +33,6 @@ func FlatNew(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 			c.String(500, "failed")
 		}
 		database.Create(&flat)
-		//if err != nil {
-		//	l.Error("adding flat to db err", zap.Error(err))
-		//	c.String(500, "failed")
-		//}
 		c.Redirect(http.StatusFound, "/")
 	}
 }

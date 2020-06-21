@@ -30,7 +30,7 @@ type Postgres struct {
 
 func New(ctx context.Context, connUrl string) (*Postgres, error) {
 
-	if err := runMigrations(connUrl); err != nil {
+	if err := RunMigrations(connUrl); err != nil {
 		return nil, errors.Wrap(err, "failed to run migrations")
 	}
 
@@ -50,7 +50,7 @@ func New(ctx context.Context, connUrl string) (*Postgres, error) {
 }
 
 func (p *Postgres) Add(flat models.Flat) error {
-	_, err := p.pool.Exec(context.Background(), _QuerySaveFlat, flat.ID, flat.Address)
+	_, err := p.pool.Exec(context.Background(), _QuerySaveFlat, flat.FlatID, flat.Address)
 	return err
 }
 
@@ -73,7 +73,7 @@ func readFlats(rows pgx.Rows) ([]models.Flat, error) {
 	flats := make([]models.Flat, 0)
 	for rows.Next() {
 		flat := models.Flat{}
-		err := rows.Scan(&flat.ID, &flat.Address)
+		err := rows.Scan(&flat.FlatID, &flat.Address)
 		if err != nil {
 			return nil, err
 		}
@@ -84,7 +84,7 @@ func readFlats(rows pgx.Rows) ([]models.Flat, error) {
 	return flats, nil
 }
 
-func runMigrations(url string) error {
+func RunMigrations(url string) error {
 
 	m, err := getMigrations(url)
 	if err != nil {

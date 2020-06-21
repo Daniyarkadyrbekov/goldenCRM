@@ -8,13 +8,12 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/jinzhu/gorm"
-
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gin-gonic/gin"
 	"github.com/goldenCRM.git/lib/handlers"
 	"github.com/goldenCRM.git/lib/models"
 	"github.com/goldenCRM.git/lib/storage/postgres"
+	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -53,15 +52,11 @@ func main() {
 		l.Fatal("can't init resources", zap.Error(err))
 	}
 
-	//TODO: make main handler |
+	//TODO: make main handler
 	router.GET("/", func(c *gin.Context) {
 		u := models.NewUser("Кадырбеков", "Данияр")
 		flats := make([]models.Flat, 0)
 		database.Find(&flats)
-		//if err != nil {
-		//	l.Error("getting list err", zap.Error(err))
-		//	c.String(500, "getting list err")
-		//}
 
 		c.HTML(200, "index.html", gin.H{
 			"user":  &u,
@@ -106,7 +101,7 @@ func getDatabase(l *zap.Logger) (*gorm.DB, error) {
 
 	databaseUrl := os.Getenv("DATABASE_URL")
 	if databaseUrl != "" {
-		db, err := gorm.Open("postgres", database) //postgres.New(context.Background(), databaseUrl)
+		db, err := gorm.Open("postgres", databaseUrl)
 		if err != nil {
 			err = errors.Wrap(err, "creating postgres conn")
 			return nil, err
@@ -128,12 +123,13 @@ func getDatabase(l *zap.Logger) (*gorm.DB, error) {
 			err = errors.Wrap(err, "get config for postgres")
 			return nil, err
 		}
-		database, err = gorm.Open("postgres", conf.ConnURL()) //postgres.New(context.Background(), conf.ConnURL())
+		database, err = gorm.Open("postgres", conf.ConnURL())
 		if err != nil {
 			err = errors.Wrap(err, "creating local postgres conn")
 			return nil, err
 		}
 	}
+	database.AutoMigrate(&models.Flat{})
 
 	return database, nil
 }

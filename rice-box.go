@@ -41,15 +41,15 @@ func init() {
 	}
 	file7 := &embedded.EmbeddedFile{
 		Filename:    "index.html",
-		FileModTime: time.Unix(1590227485, 0),
+		FileModTime: time.Unix(1592585540, 0),
 
-		Content: string("{{ template \"base_header\" . }}\n{{ template \"base_navbar\" . }}\n\n<table class=\"table table-sm table-bordered table-condensed table-striped table-hover\">\n{{/*    ID           int64*/}}\n{{/*    Area         Area*/}}\n{{/*    LandMark     string*/}}\n{{/*    Address      string*/}}\n{{/*    HomeNumber   int*/}}\n{{/*    FlatNumber   int*/}}\n{{/*    PriceMin     int*/}}\n{{/*    PriceMax     int*/}}\n{{/*    RoomsCount   int*/}}\n{{/*    RoomsType    string //TODO: addType*/}}\n{{/*    Floor        int*/}}\n{{/*    FloorsCount  int*/}}\n{{/*    Square       int*/}}\n{{/*    FlatType     string //TODO: addType*/}}\n{{/*    State        state*/}}\n{{/*    Toilet       toilet*/}}\n{{/*    ToiletCount  int*/}}\n{{/*    BuildYear    int*/}}\n{{/*    IsCorner     bool*/}}\n{{/*    Description  string*/}}\n{{/*    PictureURLs  []string*/}}\n{{/*    PhoneNumbers map[string]string*/}}\n    <thead>\n    <tr>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Район</th>\n        <th scope=\"col\">Ориентир</th>\n        <th scope=\"col\">Адрес</th>\n        <th scope=\"col\">Цена</th>\n        <th scope=\"col\">Кол-во к-т</th>\n        <th scope=\"col\">Этажность</th>\n        <th scope=\"col\">Серия</th>\n        <th scope=\"col\">Площадь</th>\n        <th scope=\"col\">Тип к-т</th>\n        <th scope=\"col\">Сан узел</th>\n        <th scope=\"col\">Ремонт</th>\n        <th scope=\"col\">Контакты</th>\n    </tr>\n    </thead>\n    <tbody>\n    {{range .flats}}\n        <tr class=\"table-row\" data-href=\"/flat/info?ID={{.ID}}\">\n            <td>{{.ID}}</td>\n            <td>{{.Area}}</td>\n            <td>{{.LandMark}}</td>\n            <td>{{.Address}}</td>\n            <td>{{.PriceMin}}-{{.PriceMax}}</td>\n            <td>{{.RoomsCount}}</td>\n            <td>{{.Floor}}/{{.FloorsCount}}</td>\n            <td>{{.FlatType}}</td>\n            <td>{{.Square}}</td>\n            <td>{{.RoomsType}}</td>\n            <td>{{.Toilet}}</td>\n            <td>{{.State}}</td>\n            <td>{{.PhoneNumbers}}</td>\n        </tr>\n    {{end}}\n    </tbody>\n</table>\n{{ template \"base_bottom\" . }}\n"),
+		Content: string("{{ template \"base_header\" . }}\n{{ template \"base_navbar\" . }}\n\n<table class=\"table table-sm table-bordered table-condensed table-striped table-hover\">\n{{/*    FlatID           int64*/}}\n{{/*    Area         Area*/}}\n{{/*    LandMark     string*/}}\n{{/*    Address      string*/}}\n{{/*    HomeNumber   int*/}}\n{{/*    FlatNumber   int*/}}\n{{/*    PriceMin     int*/}}\n{{/*    PriceMax     int*/}}\n{{/*    RoomsCount   int*/}}\n{{/*    RoomsType    string //TODO: addType*/}}\n{{/*    Floor        int*/}}\n{{/*    FloorsCount  int*/}}\n{{/*    Square       int*/}}\n{{/*    FlatType     string //TODO: addType*/}}\n{{/*    State        state*/}}\n{{/*    Toilet       toilet*/}}\n{{/*    ToiletCount  int*/}}\n{{/*    BuildYear    int*/}}\n{{/*    IsCorner     bool*/}}\n{{/*    Description  string*/}}\n{{/*    PictureURLs  []string*/}}\n{{/*    PhoneNumbers map[string]string*/}}\n    <thead>\n    <tr>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Район</th>\n        <th scope=\"col\">Ориентир</th>\n        <th scope=\"col\">Адрес</th>\n        <th scope=\"col\">Цена</th>\n        <th scope=\"col\">Кол-во к-т</th>\n        <th scope=\"col\">Этажность</th>\n        <th scope=\"col\">Серия</th>\n        <th scope=\"col\">Площадь</th>\n        <th scope=\"col\">Тип к-т</th>\n        <th scope=\"col\">Сан узел</th>\n        <th scope=\"col\">Ремонт</th>\n        <th scope=\"col\">Контакты</th>\n    </tr>\n    </thead>\n    <tbody>\n    {{range .flats}}\n        <tr class=\"table-row\" data-href=\"/flat/info?ID={{.ID}}\">\n            <td>{{.FlatID}}</td>\n            <td>{{.Area}}</td>\n            <td>{{.LandMark}}</td>\n            <td>{{.Address}}</td>\n            <td>{{.PriceMin}}-{{.PriceMax}}</td>\n            <td>{{.RoomsCount}}</td>\n            <td>{{.Floor}}/{{.FloorsCount}}</td>\n            <td>{{.FlatType}}</td>\n            <td>{{.Square}}</td>\n            <td>{{.RoomsType}}</td>\n            <td>{{.Toilet}}</td>\n            <td>{{.State}}</td>\n{{/*            <td>{{.PhoneNumbers}}</td>*/}}\n        </tr>\n    {{end}}\n    </tbody>\n</table>\n{{ template \"base_bottom\" . }}\n"),
 	}
 
 	// define dirs
 	dir1 := &embedded.EmbeddedDir{
 		Filename:   "",
-		DirModTime: time.Unix(1591244665, 0),
+		DirModTime: time.Unix(1592585540, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file2, // "base_bottom.html"
 			file3, // "base_header.html"
@@ -67,7 +67,7 @@ func init() {
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`pages/templates`, &embedded.EmbeddedBox{
 		Name: `pages/templates`,
-		Time: time.Unix(1591244665, 0),
+		Time: time.Unix(1592585540, 0),
 		Dirs: map[string]*embedded.EmbeddedDir{
 			"": dir1,
 		},

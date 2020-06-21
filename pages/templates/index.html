@@ -2,7 +2,7 @@
 {{ template "base_navbar" . }}
 
 <table class="table table-sm table-bordered table-condensed table-striped table-hover">
-{{/*    ID           int64*/}}
+{{/*    FlatID           int64*/}}
 {{/*    Area         Area*/}}
 {{/*    LandMark     string*/}}
 {{/*    Address      string*/}}
@@ -44,7 +44,7 @@
     <tbody>
     {{range .flats}}
         <tr class="table-row" data-href="/flat/info?ID={{.ID}}">
-            <td>{{.ID}}</td>
+            <td>{{.FlatID}}</td>
             <td>{{.Area}}</td>
             <td>{{.LandMark}}</td>
             <td>{{.Address}}</td>
@@ -56,7 +56,7 @@
             <td>{{.RoomsType}}</td>
             <td>{{.Toilet}}</td>
             <td>{{.State}}</td>
-            <td>{{.PhoneNumbers}}</td>
+{{/*            <td>{{.PhoneNumbers}}</td>*/}}
         </tr>
     {{end}}
     </tbody>

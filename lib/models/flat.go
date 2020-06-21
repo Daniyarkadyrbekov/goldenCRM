@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/jinzhu/gorm"
-
 	"github.com/pkg/errors"
 )
 
@@ -48,8 +47,6 @@ type Flat struct {
 	BuildYear   int
 	IsCorner    bool
 	Description string
-	//PictureURLs  []string
-	//PhoneNumbers map[string]string
 }
 
 func NewFlat(Area string,
@@ -70,9 +67,7 @@ func NewFlat(Area string,
 	ToiletCountStr string,
 	BuildYearStr string,
 	IsCorner bool,
-	Description string,
-	PictureURLs []string,
-	PhoneNumbers map[string]string) (Flat, error) {
+	Description string) (Flat, error) {
 
 	intsMap, err := getInts(
 		map[string]string{
@@ -115,8 +110,6 @@ func NewFlat(Area string,
 		BuildYear:   intsMap["BuildYear"],
 		IsCorner:    IsCorner,
 		Description: Description,
-		//PictureURLs:  PictureURLs,
-		//PhoneNumbers: PhoneNumbers,
 	}, nil
 }
 

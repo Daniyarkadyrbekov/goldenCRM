@@ -13,7 +13,7 @@ all: mod test build-local
 build-local: build local
 
 .PHONY: build
-build: static
+build:
 	rice embed-go
 	go build -o bin/goldenCRM.git -v .
 
@@ -48,16 +48,3 @@ $(TEST_TARGETS):
     >> $(TEST_OUT_DIR)/$($@_filename).out \
    || ( echo 'fail $($@_package)' && cat $(TEST_OUT_DIR)/$($@_filename).out; exit 1);
 
-.PHONY: static
-static:
-	docker run -it --rm \
-	-v "$(shell pwd):/go/src/${PROJECT}" \
-	-v "${GOPATH}/pkg:/go/pkg" \
-	-w "/go/src/${PROJECT}" \
-	-e "GOPRIVATE=${GOPRIVATE}" \
-	-e "GOFLAGS=" \
-	dialogs/go-tools-embedded:1.0.1 \
-	sh -c '\
-	(cd lib/storage/postgres/migrations/assets/; \
-	 rm -fv ../migrations.go; \
-	 go-bindata -pkg migrations -nomemcopy -o ../migrations.go *.sql)'

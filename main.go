@@ -4,18 +4,19 @@ import (
 	"html/template"
 	"log"
 	"math/rand"
+	"net"
+	"net/url"
 	"os"
 	"path/filepath"
 	"time"
 
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gin-gonic/gin"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/goldenCRM.git/lib/handlers"
 	"github.com/goldenCRM.git/lib/models"
-	"github.com/goldenCRM.git/lib/storage/postgres"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
@@ -34,7 +35,7 @@ func main() {
 
 	l.Info("starting service")
 
-	database, err := getDatabase(l)
+	database, err := getDatabase()
 	if err != nil {
 		l.Fatal(err.Error())
 	}
@@ -95,43 +96,38 @@ func getBoxes() (tmplBox, sourcesBox *rice.Box, err error) {
 	return
 }
 
-func getDatabase(l *zap.Logger) (*gorm.DB, error) {
-
-	var database *gorm.DB
+func getDatabase() (database *gorm.DB, err error) {
 
 	databaseUrl := os.Getenv("DATABASE_URL")
 	if databaseUrl != "" {
-		db, err := gorm.Open("postgres", databaseUrl)
+		database, err = gorm.Open("postgres", databaseUrl)
 		if err != nil {
 			err = errors.Wrap(err, "creating postgres conn")
 			return nil, err
 		}
-		database = db
+
 	} else {
-		v := viper.New()
-		v.SetDefault("host", "0.0.0.0")
-		v.SetDefault("port", "5432")
-		v.SetDefault("name", "files")
-		v.SetDefault("user", "admin")
-		v.SetDefault("password", "123")
-		v.SetDefault("ssl-mode", "disable")
-		v.SetDefault("schema", "")
-		v.SetDefault("health-check", time.Second)
-		v.SetDefault("max-connections", 10)
-		conf, err := postgres.NewConfig(v)
-		if err != nil {
-			err = errors.Wrap(err, "get config for postgres")
-			return nil, err
+		q := url.Values{}
+		q.Set("sslmode", "disable")
+
+		connUrl := &url.URL{
+			Scheme:   "postgres",
+			Host:     net.JoinHostPort("0.0.0.0", "5432"),
+			User:     url.UserPassword("admin", "123"),
+			Path:     url.QueryEscape("files"),
+			RawQuery: q.Encode(),
 		}
-		database, err = gorm.Open("postgres", conf.ConnURL())
+
+		database, err = gorm.Open("postgres", connUrl.String())
 		if err != nil {
 			err = errors.Wrap(err, "creating local postgres conn")
 			return nil, err
 		}
 	}
+
 	database.AutoMigrate(&models.Flat{})
 
-	return database, nil
+	return
 }
 
 func initResources(l *zap.Logger, r *gin.Engine) error {

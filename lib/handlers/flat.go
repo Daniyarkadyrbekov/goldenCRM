@@ -33,7 +33,7 @@ func FlatInfo(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 
 func FlatNew(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		flat, err := getFlatFromForm(c)
+		flat, err := getFlatFromForm(c, true)
 		if err != nil {
 			l.Error("getting flat form testForm", zap.Error(err))
 			c.String(500, "failed")
@@ -46,15 +46,29 @@ func FlatNew(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 
 func FlatSearch(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
-		c.Redirect(http.StatusFound, "/")
+		flat, err := getFlatFromForm(c, false)
+		if err != nil {
+			l.Error("getting flat form testForm", zap.Error(err))
+			c.String(500, "failed")
+			return
+		}
+
+		u := models.NewUser("Кадырбеков", "Данияр")
+		flats := make([]models.Flat, 0)
+		database.Where(&flat).Find(&flats)
+
+		c.HTML(200, "index.html", gin.H{
+			"user":  &u,
+			"flats": flats,
+		})
 	}
 }
 
-func getFlatFromForm(c *gin.Context) (models.Flat, error) {
+func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, error) {
 
 	landMark, ok := c.GetPostForm("InputLandMark")
-	if !ok || landMark == "" {
-		return models.Flat{}, errors.New("no InputHomeNumber in form")
+	if requiredFieldsCheck && (!ok || landMark == "") {
+		return models.Flat{}, errors.New("no InputLandMark in form")
 	}
 
 	// optional fields

@@ -1,29 +1,7 @@
 {{ template "base_header" . }}
 {{ template "base_navbar" . }}
 
-<table class="table table-sm table-bordered table-condensed table-striped table-hover">
-{{/*    FlatID           int64*/}}
-{{/*    Area         Area*/}}
-{{/*    LandMark     string*/}}
-{{/*    Address      string*/}}
-{{/*    HomeNumber   int*/}}
-{{/*    FlatNumber   int*/}}
-{{/*    PriceMin     int*/}}
-{{/*    PriceMax     int*/}}
-{{/*    RoomsCount   int*/}}
-{{/*    RoomsType    string //TODO: addType*/}}
-{{/*    Floor        int*/}}
-{{/*    FloorsCount  int*/}}
-{{/*    Square       int*/}}
-{{/*    FlatType     string //TODO: addType*/}}
-{{/*    State        state*/}}
-{{/*    Toilet       toilet*/}}
-{{/*    ToiletCount  int*/}}
-{{/*    BuildYear    int*/}}
-{{/*    IsCorner     bool*/}}
-{{/*    Description  string*/}}
-{{/*    PictureURLs  []string*/}}
-{{/*    PhoneNumbers map[string]string*/}}
+<table class="table table-bordered table-condensed table-striped table-hover">
     <thead>
     <tr>
         <th scope="col">ID</th>
@@ -38,7 +16,6 @@
         <th scope="col">Тип к-т</th>
         <th scope="col">Сан узел</th>
         <th scope="col">Ремонт</th>
-        <th scope="col">Контакты</th>
     </tr>
     </thead>
     <tbody>
@@ -56,7 +33,6 @@
             <td>{{.RoomsType}}</td>
             <td>{{.Toilet}}</td>
             <td>{{.State}}</td>
-{{/*            <td>{{.PhoneNumbers}}</td>*/}}
         </tr>
     {{end}}
     </tbody>

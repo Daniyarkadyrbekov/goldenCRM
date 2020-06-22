@@ -66,7 +66,8 @@ func main() {
 	})
 
 	router.GET("/flat/info", handlers.FlatInfo(l, database))
-	router.POST("/flat/new", handlers.FlatNew(l, database))
+	router.POST("/flat/add", handlers.FlatNew(l, database))
+	router.POST("/flat/search", handlers.FlatSearch(l, database))
 
 	err = router.Run(":" + port)
 	if err != nil {

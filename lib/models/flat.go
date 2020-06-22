@@ -1,29 +1,11 @@
 package models
 
 import (
-	"database/sql"
 	"strconv"
 
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 )
-
-//Телефон (+7 по базе должно высвечиваться автоматически)
-//Район
-//Адрес
-//дом №
-//квартира №
-//Цена объекта  от ………………….до …………..
-//Кол -во комнат
-//тип комнат
-//Этаж / этажность
-//Серия
-//площадь М2
-//Сан узел (Раздельный ,Во дворе,  Нет ,   Совмещенный)
-//Кол -во сан узлов
-//Год постройки
-//Угловая или нет как у тебя стоит с галочкой так и оставим
-//Описание
 
 type Flat struct {
 	gorm.Model
@@ -36,7 +18,7 @@ type Flat struct {
 	PriceMin    int
 	PriceMax    int
 	RoomsCount  int
-	RoomsType   sql.NullString
+	RoomsType   string
 	Floor       int
 	FloorsCount int
 	Square      int
@@ -86,10 +68,6 @@ func NewFlat(Area string,
 		return Flat{}, err
 	}
 
-	roomsType := sql.NullString{}
-	roomsType.String = RoomsType
-	roomsType.Valid = RoomsType != ""
-
 	return Flat{
 		Area:        Area,
 		LandMark:    LandMark,
@@ -99,7 +77,7 @@ func NewFlat(Area string,
 		PriceMin:    intsMap["PriceMin"],
 		PriceMax:    intsMap["PriceMax"],
 		RoomsCount:  intsMap["RoomsCount"],
-		RoomsType:   roomsType,
+		RoomsType:   RoomsType,
 		Floor:       intsMap["Floor"],
 		FloorsCount: intsMap["FloorsCount"],
 		Square:      intsMap["Square"],
@@ -116,6 +94,10 @@ func NewFlat(Area string,
 func getInts(mp map[string]string) (map[string]int, error) {
 	result := make(map[string]int)
 	for key, val := range mp {
+		if val == "" {
+			continue
+		}
+
 		strInt, err := strconv.Atoi(val)
 
 		if err != nil {

@@ -1,5 +1,4 @@
 {{ define "base_nav_flat_form" }}
-<form id="my-form" action="/flat/new" method="POST">
     <div class="form-row">
         <div class="form-group col-md-1">
             <label>Район</label>
@@ -8,6 +7,7 @@
                 <option selected>Аль-Фарабийский</option>
                 <option selected>Енбекшинский</option>
                 <option selected>Каратауский</option>
+                <option selected></option>
             </select>
         </div>
         <div class="form-group col-md-2">
@@ -15,8 +15,8 @@
             <input type="text" class="form-control" name="InputAddress">
         </div>
         <div class="form-group col-md-1">
-            <label>ориентир</label>
-            <input type="text" class="form-control" name="InputLandMark">
+            <label for="validationDefault03">ориентир</label>
+            <input type="text" class="form-control" name="InputLandMark" id="validationDefault03" required>
         </div>
         <div class="form-group col-md-1">
             <label>Дом №</label>
@@ -42,6 +42,7 @@
                 <option selected>3</option>
                 <option selected>4</option>
                 <option selected>5+</option>
+                <option selected></option>
             </select>
         </div>
         <div class="form-group col-md-1">
@@ -50,6 +51,7 @@
                 <option selected>Какие</option>
                 <option selected>типы</option>
                 <option selected>?</option>
+                <option selected></option>
             </select>
         </div>
         <div class="form-group col-md-1">
@@ -81,6 +83,7 @@
                 <option selected>книжка</option>
                 <option selected>общежитие</option>
                 <option selected>ташкентский дом</option>
+                <option selected></option>
             </select>
         </div>
         <div class="form-group col-md-1">
@@ -89,6 +92,7 @@
                 <option selected>какие</option>
                 <option selected>типы</option>
                 <option selected>??</option>
+                <option selected></option>
             </select>
         </div>
         <div class="form-group col-md-1">
@@ -102,6 +106,7 @@
                 <option selected>Во дворе</option>
                 <option selected>Нет</option>
                 <option selected>Совмещенный</option>
+                <option selected></option>
             </select>
         </div>
         <div class="form-group col-md-1">
@@ -116,11 +121,9 @@
             <label>угловая</label>
             <input type="checkbox" name="inputIsCorner" aria-label="Checkbox for following text input">
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-5">
             <label>Описание</label>
             <input type="text" class="form-control" name="InputDescription">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Добавить</button>
-</form>
 {{end}}

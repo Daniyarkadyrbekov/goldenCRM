@@ -1,0 +1,6 @@
+{{ define "base_add_form" }}
+    <form id="my-form" action="/flat/add" method="POST">
+        {{ template "base_nav_flat_form" . }}
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+{{ end }}

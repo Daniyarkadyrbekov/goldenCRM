@@ -18,10 +18,12 @@ func FlatInfo(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		ids, ok := params["ID"]
 		if !ok || len(ids) != 1 {
 			c.String(500, fmt.Sprintf("params = %v\n", params))
+			return
 		}
 		id, err := strconv.Atoi(ids[0])
 		if err != nil {
 			c.String(500, err.Error())
+			return
 		}
 		flat := models.Flat{}
 		database.Where("flat_id = ?", id).First(&flat)
@@ -35,90 +37,45 @@ func FlatNew(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		if err != nil {
 			l.Error("getting flat form testForm", zap.Error(err))
 			c.String(500, "failed")
+			return
 		}
 		database.Create(&flat)
 		c.Redirect(http.StatusFound, "/")
 	}
 }
 
+func FlatSearch(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
+	return func(c *gin.Context) {
+		c.Redirect(http.StatusFound, "/")
+	}
+}
+
 func getFlatFromForm(c *gin.Context) (models.Flat, error) {
 
-	area, ok := c.GetPostForm("InputArea")
-	if !ok {
-		return models.Flat{}, errors.New("no InputAddress in form")
-	}
 	landMark, ok := c.GetPostForm("InputLandMark")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	address, ok := c.GetPostForm("InputAddress")
-	if !ok {
+	if !ok || landMark == "" {
 		return models.Flat{}, errors.New("no InputHomeNumber in form")
 	}
-	homeNumber, ok := c.GetPostForm("InputHomeNumber")
-	if !ok {
-		return models.Flat{}, errors.New("no InputHomeNumber in form")
-	}
-	flatNumber, ok := c.GetPostForm("InputFlatNumber")
-	if !ok {
-		return models.Flat{}, errors.New("no InputFlatNumber in form")
-	}
-	priceMin, ok := c.GetPostForm("InputPriceMin")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	priceMax, ok := c.GetPostForm("InputPriceMax")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	roomsCount, ok := c.GetPostForm("InputRoomsCount")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	roomsType, ok := c.GetPostForm("InputRoomsType")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	floor, ok := c.GetPostForm("InputFloor")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	floorsCount, ok := c.GetPostForm("InputFloorsCount")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	flatType, ok := c.GetPostForm("InputFlatType")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	square, ok := c.GetPostForm("InputSquare")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	state, ok := c.GetPostForm("InputState")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	toilet, ok := c.GetPostForm("InputToilet")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	toiletCount, ok := c.GetPostForm("InputToiletCount")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	buildYear, ok := c.GetPostForm("InputBuildYear")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	isCornerStr, ok := c.GetPostForm("inputIsCorner")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
-	description, ok := c.GetPostForm("InputDescription")
-	if !ok {
-		return models.Flat{}, errors.New("no InputArea in form")
-	}
+
+	// optional fields
+	area, _ := c.GetPostForm("InputArea")
+	address, _ := c.GetPostForm("InputAddress")
+	homeNumber, _ := c.GetPostForm("InputHomeNumber")
+	flatNumber, _ := c.GetPostForm("InputFlatNumber")
+	priceMin, _ := c.GetPostForm("InputPriceMin")
+	priceMax, _ := c.GetPostForm("InputPriceMax")
+	roomsCount, _ := c.GetPostForm("InputRoomsCount")
+	roomsType, _ := c.GetPostForm("InputRoomsType")
+	floor, _ := c.GetPostForm("InputFloor")
+	floorsCount, _ := c.GetPostForm("InputFloorsCount")
+	flatType, _ := c.GetPostForm("InputFlatType")
+	square, _ := c.GetPostForm("InputSquare")
+	state, _ := c.GetPostForm("InputState")
+	toilet, _ := c.GetPostForm("InputToilet")
+	toiletCount, _ := c.GetPostForm("InputToiletCount")
+	buildYear, _ := c.GetPostForm("InputBuildYear")
+	isCornerStr, _ := c.GetPostForm("inputIsCorner")
+	description, _ := c.GetPostForm("InputDescription")
 
 	flat, err := models.NewFlat(
 		area,

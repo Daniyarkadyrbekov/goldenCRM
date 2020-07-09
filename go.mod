@@ -4,7 +4,6 @@ go 1.14
 
 require (
 	github.com/GeertJohan/go.rice v1.0.0
-	github.com/aws/aws-sdk-go v1.31.1
 	github.com/gin-gonic/gin v1.5.0
 	github.com/golang-migrate/migrate/v4 v4.11.0
 	github.com/jackc/pgx/v4 v4.6.0

@@ -1,6 +1,6 @@
 package main
 
-import (
+import 	(
 	"html/template"
 	"log"
 	"math/rand"
@@ -64,6 +64,12 @@ func main() {
 			"flats": flats,
 		})
 	})
+
+	//router.GET("/ping", func(c *gin.Context) {
+	//	c.JSON(200, gin.H{
+	//		"message": "pong",
+	//	})
+	//})
 
 	router.GET("/flat/info", handlers.FlatInfo(l, database))
 	router.POST("/flat/add", handlers.FlatNew(l, database))

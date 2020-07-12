@@ -27,7 +27,9 @@ func FlatInfo(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		}
 		flat := models.Flat{}
 		database.Where("flat_id = ?", id).First(&flat)
-		c.JSON(200, flat)
+		c.HTML(200, "flat.html", gin.H{
+			"flat": flat,
+		})
 	}
 }
 

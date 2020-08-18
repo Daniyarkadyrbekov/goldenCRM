@@ -57,7 +57,9 @@ func FlatSearch(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 
 		u := models.NewUser("Кадырбеков", "Данияр")
 		flats := make([]models.Flat, 0)
-		database.Where(&flat).Find(&flats)
+
+		complexCondition := getComplexCondition(&flat)
+		database.Where(&flat).Where(complexCondition).Find(&flats)
 
 		c.HTML(200, "index.html", gin.H{
 			"user":  &u,

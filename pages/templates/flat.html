@@ -1,0 +1,21 @@
+{{ template "base_header" . }}
+<h1>Квартира № {{.flat.FlatID}}</h1>
+<h6>Район: {{.flat.Area}}</h6>
+<h6>Ориентир: {{.flat.LandMark}}</h6>
+<h6>Адрес: {{.flat.Address}}</h6>
+<h6>Номер дома: {{.flat.HomeNumber}}</h6>
+<h6>Номер квартиры: {{.flat.FlatNumber}}</h6>
+<h6>Минимальная цена: {{.flat.PriceMin}} Максимальная цена: {{.flat.PriceMax}}</h6>
+<h6>Количество комнат: {{.flat.RoomsCount}}</h6>
+<h6>Тип комнат: {{.flat.RoomsType}}</h6>
+<h6>Этаж: {{.flat.Floor}}</h6>
+<h6>Этажность: {{.flat.FloorsCount}}</h6>
+<h6>Площадь: {{.flat.Square}}</h6>
+<h6>Тип квартиры: {{.flat.FlatType}}</h6>
+<h6>Состояние: {{.flat.State}}</h6>
+<h6>Сан узел: {{.flat.Toilet}}</h6>
+<h6>Колтчество сан узелов: {{.flat.ToiletCount}}</h6>
+<h6>Год построения: {{.flat.BuildYear}}</h6>
+<h6>Торцевая: {{.flat.IsCorner}}</h6>
+<h6>Описание: {{.flat.Description}}</h6>
+{{ template "base_bottom" . }}

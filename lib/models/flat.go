@@ -29,7 +29,7 @@ type Flat struct {
 	BuildYear   int
 	IsCorner    bool
 	Description string
-	Owners      []Owner
+	Owners      []Owner `gorm:"ForeignKey:ID"`
 }
 
 func NewFlat(Area string,
@@ -50,7 +50,8 @@ func NewFlat(Area string,
 	ToiletCountStr string,
 	BuildYearStr string,
 	IsCorner bool,
-	Description string) (Flat, error) {
+	Description string,
+	owners []Owner) (Flat, error) {
 
 	intsMap, err := getInts(
 		map[string]string{
@@ -89,6 +90,7 @@ func NewFlat(Area string,
 		BuildYear:   intsMap["BuildYear"],
 		IsCorner:    IsCorner,
 		Description: Description,
+		Owners:      owners,
 	}, nil
 }
 

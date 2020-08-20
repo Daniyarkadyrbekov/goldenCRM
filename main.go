@@ -126,8 +126,8 @@ func getDatabase() (database *gorm.DB, err error) {
 		}
 	}
 
-	database.AutoMigrate(&models.Flat{})
-	database.AutoMigrate(&models.Owner{})
+	database.AutoMigrate(&models.Flat{}, &models.Owner{})
+	database.Model(&models.Owner{}).AddForeignKey("id", "owners(id)", "CASCADE", "CASCADE")
 
 	return
 }

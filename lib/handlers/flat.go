@@ -26,7 +26,7 @@ func FlatInfo(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 			return
 		}
 		flat := models.Flat{}
-		database.Where("flat_id = ?", id).First(&flat)
+		database.Where("flat_id = ?", id).Preload("Owners").First(&flat)
 		c.HTML(200, "flat.html", gin.H{
 			"flat": flat,
 		})
@@ -95,6 +95,13 @@ func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, err
 	isCornerStr, _ := c.GetPostForm("inputIsCorner")
 	description, _ := c.GetPostForm("InputDescription")
 
+	//ownerName, ok := c.GetPostForm("InputOwnerName0")
+	//if !ok {
+	//	panic("no InputOwnerName0")
+	//}
+
+	owners := []models.Owner{{Name: "owner Name", Phone: "owner Phone"}}
+
 	flat, err := models.NewFlat(
 		area,
 		landMark,
@@ -114,7 +121,8 @@ func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, err
 		toiletCount,
 		buildYear,
 		isCornerStr == "on",
-		description)
+		description,
+		owners)
 
 	if err != nil {
 		return models.Flat{}, err

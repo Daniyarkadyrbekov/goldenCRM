@@ -29,6 +29,7 @@ type Flat struct {
 	BuildYear   int
 	IsCorner    bool
 	Description string
+	Owners      []Owner
 }
 
 func NewFlat(Area string,

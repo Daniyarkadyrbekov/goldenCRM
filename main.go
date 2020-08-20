@@ -127,6 +127,7 @@ func getDatabase() (database *gorm.DB, err error) {
 	}
 
 	database.AutoMigrate(&models.Flat{})
+	database.AutoMigrate(&models.Owner{})
 
 	return
 }

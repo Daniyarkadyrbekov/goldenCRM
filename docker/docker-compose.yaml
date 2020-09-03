@@ -4,7 +4,7 @@ version: '3.4'
 
 services:
   postgres:
-    image: postgres:9.6
+    image: postgres:11.0
     container_name: plat-goldenCRM-postgres
     restart: always
     ports:
@@ -14,7 +14,7 @@ services:
         source: plat-goldenCRM-data
         target: /data
     environment:
-      - POSTGRES_DB=files
+      - POSTGRES_DB=crm
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=123
       - POSTGRES_INITDB_ARGS=--data-checksums

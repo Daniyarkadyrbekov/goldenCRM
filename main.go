@@ -115,7 +115,7 @@ func getDatabase() (database *gorm.DB, err error) {
 			Scheme:   "postgres",
 			Host:     net.JoinHostPort("0.0.0.0", "5432"),
 			User:     url.UserPassword("admin", "123"),
-			Path:     url.QueryEscape("files"),
+			Path:     url.QueryEscape("crm"),
 			RawQuery: q.Encode(),
 		}
 
@@ -127,7 +127,7 @@ func getDatabase() (database *gorm.DB, err error) {
 	}
 
 	database.AutoMigrate(&models.Flat{}, &models.Owner{})
-	database.Model(&models.Owner{}).AddForeignKey("id", "owners(id)", "CASCADE", "CASCADE")
+	database.Model(&models.Owner{}).AddForeignKey("owner_id", "owners(owner_id)", "CASCADE", "CASCADE") // Foreign key need to define manually
 
 	return
 }

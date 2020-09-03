@@ -13,20 +13,28 @@ import (
 )
 
 func FlatInfo(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
+	l = l.With(zap.String("method", "info"))
 	return func(c *gin.Context) {
 		params := c.Request.URL.Query()
 		ids, ok := params["ID"]
 		if !ok || len(ids) != 1 {
+			l.Error("id not defined")
 			c.String(500, fmt.Sprintf("params = %v\n", params))
 			return
 		}
 		id, err := strconv.Atoi(ids[0])
 		if err != nil {
+			l.Error("converting id err", zap.Error(err))
 			c.String(500, err.Error())
 			return
 		}
 		flat := models.Flat{}
-		database.Where("flat_id = ?", id).Preload("Owners").First(&flat)
+		database.Where("flat_id = ?", id).First(&flat)
+
+		owners := make([]models.Owner, 0)
+		database.Model(&flat).Association("Owners").Find(&owners)
+		flat.Owners = owners
+
 		c.HTML(200, "flat.html", gin.H{
 			"flat": flat,
 		})
@@ -41,6 +49,9 @@ func FlatNew(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 			c.String(500, "failed")
 			return
 		}
+
+		l.Debug("create flats", zap.Any("flats", flat))
+
 		database.Create(&flat)
 		c.Redirect(http.StatusFound, "/")
 	}
@@ -59,7 +70,7 @@ func FlatSearch(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		flats := make([]models.Flat, 0)
 
 		complexCondition := getComplexCondition(&flat)
-		database.Where(&flat).Where(complexCondition).Find(&flats)
+		database.Where(&flat).Where(complexCondition).Preload("Owners").Find(&flats)
 
 		c.HTML(200, "index.html", gin.H{
 			"user":  &u,
@@ -95,12 +106,7 @@ func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, err
 	isCornerStr, _ := c.GetPostForm("inputIsCorner")
 	description, _ := c.GetPostForm("InputDescription")
 
-	//ownerName, ok := c.GetPostForm("InputOwnerName0")
-	//if !ok {
-	//	panic("no InputOwnerName0")
-	//}
-
-	owners := []models.Owner{{Name: "owner Name", Phone: "owner Phone"}}
+	owners := getOwnersFromForm(c)
 
 	flat, err := models.NewFlat(
 		area,
@@ -129,4 +135,29 @@ func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, err
 	}
 
 	return flat, nil
+}
+
+func getOwnersFromForm(c *gin.Context) []models.Owner {
+	owners := make([]models.Owner, 0)
+
+	counter := 0
+	for {
+		cStr := strconv.Itoa(counter)
+		counter++
+
+		ownerName, ok := c.GetPostForm("InputOwnerName" + cStr)
+		if !ok {
+			return owners
+		}
+
+		ownerPhone, ok := c.GetPostForm("InputOwnerPhoneNumber" + cStr)
+		if !ok {
+			return owners
+		}
+
+		owners = append(owners, models.Owner{
+			Name:  ownerName,
+			Phone: ownerPhone,
+		})
+	}
 }

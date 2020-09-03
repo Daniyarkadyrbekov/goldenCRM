@@ -19,5 +19,7 @@ func getComplexCondition(flat *models.Flat) string {
 		flat.Square = 0
 	}
 
+	flat.Owners = nil
+
 	return condition
 }

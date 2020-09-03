@@ -29,7 +29,7 @@ type Flat struct {
 	BuildYear   int
 	IsCorner    bool
 	Description string
-	Owners      []Owner `gorm:"ForeignKey:ID"`
+	Owners      []Owner `gorm:"ForeignKey:OwnerID"`
 }
 
 func NewFlat(Area string,

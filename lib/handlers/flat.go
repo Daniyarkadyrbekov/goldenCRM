@@ -69,8 +69,28 @@ func FlatSearch(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		u := models.NewUser("Кадырбеков", "Данияр")
 		flats := make([]models.Flat, 0)
 
+		owners := flat.Owners
+		flat.Owners = nil
 		complexCondition := getComplexCondition(&flat)
-		database.Where(&flat).Where(complexCondition).Preload("Owners").Find(&flats)
+		database.Where(&flat).Where(complexCondition).Preload("Owners").Find(&flats).Where("")
+
+		//filter flats by ownerNumber
+		if len(owners) == 1 && owners[0].Phone != "" {
+			result := make([]models.Flat, 0, len(flats))
+			for _, f := range flats {
+				matched := false
+				for _, owner := range f.Owners {
+					if owners[0].Phone == owner.Phone {
+						matched = true
+						break
+					}
+				}
+				if matched {
+					result = append(result, f)
+				}
+			}
+			flats = result
+		}
 
 		c.HTML(200, "index.html", gin.H{
 			"user":  &u,
@@ -145,13 +165,9 @@ func getOwnersFromForm(c *gin.Context) []models.Owner {
 		cStr := strconv.Itoa(counter)
 		counter++
 
-		ownerName, ok := c.GetPostForm("InputOwnerName" + cStr)
-		if !ok {
-			return owners
-		}
-
-		ownerPhone, ok := c.GetPostForm("InputOwnerPhoneNumber" + cStr)
-		if !ok {
+		ownerName, nameExists := c.GetPostForm("InputOwnerName" + cStr)
+		ownerPhone, phoneExists := c.GetPostForm("InputOwnerPhoneNumber" + cStr)
+		if !nameExists && !phoneExists {
 			return owners
 		}
 

@@ -15,11 +15,12 @@ func getComplexCondition(flat *models.Flat) string {
 	}
 
 	if flat.Square != 0 {
-		condition += " AND square >= " + strconv.Itoa(flat.Square)
+		if condition != "" {
+			condition += " AND "
+		}
+		condition += "square >= " + strconv.Itoa(flat.Square)
 		flat.Square = 0
 	}
-
-	flat.Owners = nil
 
 	return condition
 }

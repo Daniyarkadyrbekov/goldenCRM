@@ -41,7 +41,9 @@ func FlatInfo(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 	}
 }
 
-func FlatNew(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
+func FlatAdd(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
+
+	l = l.With(zap.String("method", "FlatAdd"))
 	return func(c *gin.Context) {
 		flat, err := getFlatFromForm(c, true)
 		if err != nil {
@@ -49,8 +51,6 @@ func FlatNew(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 			c.String(500, "failed")
 			return
 		}
-
-		l.Debug("create flats", zap.Any("flats", flat))
 
 		database.Create(&flat)
 		c.Redirect(http.StatusFound, "/")
@@ -72,9 +72,9 @@ func FlatSearch(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		owners := flat.Owners
 		flat.Owners = nil
 		complexCondition := getComplexCondition(&flat)
-		database.Where(&flat).Where(complexCondition).Preload("Owners").Find(&flats).Where("")
+		database.Where(&flat).Where(complexCondition).Preload("Owners").Find(&flats)
 
-		//filter flats by ownerNumber
+		//filter flats by ownerPhoneNumber
 		if len(owners) == 1 && owners[0].Phone != "" {
 			result := make([]models.Flat, 0, len(flats))
 			for _, f := range flats {
@@ -124,6 +124,7 @@ func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, err
 	toiletCount, _ := c.GetPostForm("InputToiletCount")
 	buildYear, _ := c.GetPostForm("InputBuildYear")
 	isCornerStr, _ := c.GetPostForm("inputIsCorner")
+	isSeparatedStr, _ := c.GetPostForm("inputIsSeparated")
 	description, _ := c.GetPostForm("InputDescription")
 
 	owners := getOwnersFromForm(c)
@@ -147,6 +148,7 @@ func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, err
 		toiletCount,
 		buildYear,
 		isCornerStr == "on",
+		isSeparatedStr == "on",
 		description,
 		owners)
 

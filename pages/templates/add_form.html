@@ -2,22 +2,32 @@
     <form id="my-form" action="/flat/add" method="POST">
         <div class="form-row">
             <div class="form-group col-md-1">
-                <label>Район</label>
+                <label>Р-он</label>
                 <select class="form-control" name="InputArea">
-                    <option selected>Абайский</option>
-                    <option selected>Аль-Фарабийский</option>
-                    <option selected>Енбекшинский</option>
-                    <option selected>Каратауский</option>
+                    <option selected>Аб</option>
+                    <option selected>Аль-Ф</option>
+                    <option selected>Енб</option>
+                    <option selected>Кар</option>
                     <option selected></option>
                 </select>
             </div>
             <div class="form-group col-md-2">
                 <label>Адрес</label>
-                <input type="text" class="form-control" name="InputAddress">
+                <input type="text" class="form-control" name="InputAddress" list="addresses" autocomplete="off">
+                <datalist id="addresses">
+                {{range .addresses}}
+                    <option value="{{.Address}}">
+                {{end}}
+                </datalist>
             </div>
             <div class="form-group col-md-1">
-                <label for="validationDefault03">ориентир</label>
-                <input type="text" class="form-control" name="InputLandMark" id="validationDefault03" required>
+                <label>ориентир</label>
+                <input type="text" class="form-control" name="InputLandMark" required list="landmarks" autocomplete="off">
+                <datalist id="landmarks">
+                {{range .landmarks}}
+                    <option value="{{.Landmark}}">
+                {{end}}
+                </datalist>
             </div>
             <div class="form-group col-md-1">
                 <label>Дом №</label>
@@ -36,22 +46,13 @@
                 <input type="text" class="form-control" id="InputPriceMax" name="InputPriceMax">
             </div>
             <div class="form-group col-md-1">
-                <label>Кол-во</label>
+                <label>к-т</label>
                 <select class="form-control" name="InputRoomsCount">
                     <option selected>1</option>
                     <option selected>2</option>
                     <option selected>3</option>
                     <option selected>4</option>
                     <option selected>5+</option>
-                    <option selected></option>
-                </select>
-            </div>
-            <div class="form-group col-md-1">
-                <label>тип ком-т</label>
-                <select class="form-control" name="InputRoomsType">
-                    <option selected>Какие</option>
-                    <option selected>типы</option>
-                    <option selected>?</option>
                     <option selected></option>
                 </select>
             </div>
@@ -63,8 +64,6 @@
                 <label>этажность</label>
                 <input type="text" class="form-control" name="InputFloorsCount">
             </div>
-        </div>
-        <div class="form-row">
             <div class="form-group col-md-1">
                 <label>тип ком-т</label>
                 <select class="form-control" name="InputFlatType">
@@ -87,12 +86,17 @@
                     <option selected></option>
                 </select>
             </div>
+        </div>
+        <div class="form-row">
             <div class="form-group col-md-1">
                 <label>состояние</label>
                 <select class="form-control" name="InputState">
-                    <option selected>какие</option>
-                    <option selected>типы</option>
-                    <option selected>??</option>
+                    <option selected>черновая отделка</option>
+                    <option selected>свободная планировка</option>
+                    <option selected>требует ремонта</option>
+                    <option selected>евроремнт</option>
+                    <option selected>среднее</option>
+                    <option selected>хорошее</option>
                     <option selected></option>
                 </select>
             </div>
@@ -119,8 +123,12 @@
                 <input type="text" class="form-control" name="InputBuildYear">
             </div>
             <div class="form-group col-md-1">
-                <label>угловая</label>
+                <label>квартра угловая</label>
                 <input type="checkbox" name="inputIsCorner" aria-label="Checkbox for following text input">
+            </div>
+            <div class="form-group col-md-1">
+                <label>комнаты раздельные</label>
+                <input type="checkbox" name="inputIsSeparated" aria-label="Checkbox for following text input">
             </div>
             <div class="form-group col-md-5">
                 <label>Описание</label>
@@ -149,7 +157,7 @@
                             <input type="text" name='InputOwnerName0'  placeholder='Имя' class="form-control"/>
                         </td>
                         <td data-name="InputOwnerPhoneNumber">
-                            <input type="tel" name='InputOwnerPhoneNumber0' placeholder='707-777-77-77' class="form-control" pattern="[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"/>
+                            <input type="tel" name='InputOwnerPhoneNumber0' placeholder='7076662233' class="form-control" pattern="[0-9]{3}[0-9]{3}[0-9]{2}[0-9]{2}"/>
                         </td>
                         <td data-name="del">
                             <button name="del0" class='btn btn-danger glyphicon glyphicon-remove row-remove'><span aria-hidden="true">×</span></button>

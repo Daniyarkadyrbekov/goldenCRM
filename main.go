@@ -54,20 +54,20 @@ func main() {
 	}
 
 	//TODO: make main handler
-	router.GET("/", func(c *gin.Context) {
-		u := models.NewUser("Кадырбеков", "Данияр")
-		flats := make([]models.Flat, 0)
-		database.Find(&flats)
-
-		c.HTML(200, "index.html", gin.H{
-			"user":  &u,
-			"flats": flats,
-		})
-	})
+	router.GET("/", handlers.MainPage(l, database))
 
 	router.GET("/flat/info", handlers.FlatInfo(l, database))
-	router.POST("/flat/add", handlers.FlatNew(l, database))
+	router.POST("/flat/add", handlers.FlatAdd(l, database))
 	router.POST("/flat/search", handlers.FlatSearch(l, database))
+
+	router.GET("/admin", handlers.AdminMain(l))
+	router.GET("/admin/addresses", handlers.AdminGetAddresses(l, database))
+	router.POST("/admin/addAddress", handlers.AdminAddAddress(l, database))
+	router.POST("/admin/deleteAddress", handlers.AdminDeleteAddress(l, database))
+
+	router.GET("/admin/landmarks", handlers.AdminGetLandmarks(l, database))
+	router.POST("/admin/addLandmark", handlers.AdminAddLandmark(l, database))
+	router.POST("/admin/deleteLandmark", handlers.AdminDeleteLandmark(l, database))
 
 	err = router.Run(":" + port)
 	if err != nil {
@@ -126,7 +126,7 @@ func getDatabase() (database *gorm.DB, err error) {
 		}
 	}
 
-	database.AutoMigrate(&models.Flat{}, &models.Owner{})
+	database.AutoMigrate(&models.Flat{}, &models.Owner{}, &models.Address{}, &models.Landmark{})
 	database.Model(&models.Owner{}).AddForeignKey("owner_id", "owners(owner_id)", "CASCADE", "CASCADE") // Foreign key need to define manually
 
 	return

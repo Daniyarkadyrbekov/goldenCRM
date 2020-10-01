@@ -4,27 +4,31 @@
 <table class="table table-bordered table-condensed table-striped table-hover">
     <thead>
     <tr>
+        <th scope="col"></th>
         <th scope="col">ID</th>
-        <th scope="col">Район</th>
+        <th scope="col">Р-он</th>
         <th scope="col">Ориентир</th>
         <th scope="col">Адрес</th>
         <th scope="col">Цена</th>
-        <th scope="col">Кол-во к-т</th>
-        <th scope="col">Этажность</th>
+        <th scope="col">к-т</th>
+        <th scope="col">Этаж</th>
         <th scope="col">Серия</th>
-        <th scope="col">Площадь</th>
+        <th scope="col">М2</th>
         <th scope="col">Тип к-т</th>
         <th scope="col">Сан узел</th>
         <th scope="col">Ремонт</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Телефон</th>
     </tr>
     </thead>
     <tbody>
     {{range .flats}}
         <tr class="table-row" data-href="/flat/info?ID={{.ID}}">
+            <td><input type="checkbox"></td>
             <td>{{.FlatID}}</td>
             <td>{{.Area}}</td>
             <td>{{.LandMark}}</td>
-            <td>{{.Address}}</td>
+            <td>{{.Address}} д{{.HomeNumber}} кв{{.FlatNumber}}</td>
             <td>{{.PriceMin}}-{{.PriceMax}}</td>
             <td>{{.RoomsCount}}</td>
             <td>{{.Floor}}/{{.FloorsCount}}</td>
@@ -32,6 +36,8 @@
             <td>{{.Square}}</td>
             <td>{{.RoomsType}}</td>
             <td>{{.Toilet}}</td>
+            <td>{{.State}}</td>
+            <td>{{.State}}</td>
             <td>{{.State}}</td>
         </tr>
     {{end}}

@@ -59,9 +59,9 @@ func init() {
 	}
 	filea := &embedded.EmbeddedFile{
 		Filename:    "index.html",
-		FileModTime: time.Unix(1601141089, 0),
+		FileModTime: time.Unix(1602166051, 0),
 
-		Content: string("{{ template \"base_header\" . }}\n{{ template \"base_navbar\" . }}\n\n<table class=\"table table-bordered table-condensed table-striped table-hover\">\n    <thead>\n    <tr>\n        <th scope=\"col\"></th>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Р-он</th>\n        <th scope=\"col\">Ориентир</th>\n        <th scope=\"col\">Адрес</th>\n        <th scope=\"col\">Цена</th>\n        <th scope=\"col\">к-т</th>\n        <th scope=\"col\">Этаж</th>\n        <th scope=\"col\">Серия</th>\n        <th scope=\"col\">М2</th>\n        <th scope=\"col\">Тип к-т</th>\n        <th scope=\"col\">Сан узел</th>\n        <th scope=\"col\">Ремонт</th>\n        <th scope=\"col\">Имя</th>\n        <th scope=\"col\">Телефон</th>\n    </tr>\n    </thead>\n    <tbody>\n    {{range .flats}}\n        <tr class=\"table-row\" data-href=\"/flat/info?ID={{.ID}}\">\n            <td><input type=\"checkbox\"></td>\n            <td>{{.FlatID}}</td>\n            <td>{{.Area}}</td>\n            <td>{{.LandMark}}</td>\n            <td>{{.Address}} д{{.HomeNumber}} кв{{.FlatNumber}}</td>\n            <td>{{.PriceMin}}-{{.PriceMax}}</td>\n            <td>{{.RoomsCount}}</td>\n            <td>{{.Floor}}/{{.FloorsCount}}</td>\n            <td>{{.FlatType}}</td>\n            <td>{{.Square}}</td>\n            <td>{{.RoomsType}}</td>\n            <td>{{.Toilet}}</td>\n            <td>{{.State}}</td>\n            <td>{{.State}}</td>\n            <td>{{.State}}</td>\n        </tr>\n    {{end}}\n    </tbody>\n</table>\n{{ template \"base_bottom\" . }}\n"),
+		Content: string("{{ template \"base_header\" . }}\n{{ template \"base_navbar\" . }}\n\n<table class=\"table table-bordered table-condensed table-striped table-hover\">\n    <thead>\n    <tr>\n        <th scope=\"col\"></th>\n        <th scope=\"col\">ID</th>\n        <th scope=\"col\">Р-он</th>\n        <th scope=\"col\">Ориентир</th>\n        <th scope=\"col\">Адрес</th>\n        <th scope=\"col\">Цена</th>\n        <th scope=\"col\">к-т</th>\n        <th scope=\"col\">Этаж</th>\n        <th scope=\"col\">Серия</th>\n        <th scope=\"col\">М2</th>\n        <th scope=\"col\">Тип к-т</th>\n        <th scope=\"col\">Сан узел</th>\n        <th scope=\"col\">Ремонт</th>\n        <th scope=\"col\">Имя</th>\n        <th scope=\"col\">Телефон</th>\n    </tr>\n    </thead>\n    <tbody>\n    {{range .flats}}\n        <tr class=\"table-row\" data-href=\"/flat/info?ID={{.ID}}\">\n            <td><input type=\"checkbox\"></td>\n            <td>{{.FlatID}}</td>\n            <td>{{.Area}}</td>\n            <td>{{.LandMark}}</td>\n            <td>{{.Address}} д{{.HomeNumber}} кв{{.FlatNumber}}</td>\n            <td>{{.PriceMin}}-{{.PriceMax}}</td>\n            <td>{{.RoomsCount}}</td>\n            <td>{{.Floor}}/{{.FloorsCount}}</td>\n            <td>{{.FlatType}}</td>\n            <td>{{.Square}}</td>\n            <td>{{.RoomsType}}</td>\n            <td>{{.Toilet}}</td>\n            <td>{{.State}}</td>\n            {{if not .Owners}}\n                <td>нет</td>\n                <td>нет</td>\n            {{else}}\n                <td>{{(index .Owners 0).Name}}</td>\n                <td>{{(index .Owners 0).Phone}}</td>\n            {{end}}\n        </tr>\n    {{end}}\n    </tbody>\n</table>\n{{ template \"base_bottom\" . }}\n"),
 	}
 	fileb := &embedded.EmbeddedFile{
 		Filename:    "search_form.html",
@@ -73,7 +73,7 @@ func init() {
 	// define dirs
 	dir1 := &embedded.EmbeddedDir{
 		Filename:   "",
-		DirModTime: time.Unix(1601574222, 0),
+		DirModTime: time.Unix(1602166051, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file2, // "add_form.html"
 			file3, // "admin_addresses_list.html"
@@ -95,7 +95,7 @@ func init() {
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`pages/templates`, &embedded.EmbeddedBox{
 		Name: `pages/templates`,
-		Time: time.Unix(1601574222, 0),
+		Time: time.Unix(1602166051, 0),
 		Dirs: map[string]*embedded.EmbeddedDir{
 			"": dir1,
 		},

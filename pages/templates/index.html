@@ -37,8 +37,13 @@
             <td>{{.RoomsType}}</td>
             <td>{{.Toilet}}</td>
             <td>{{.State}}</td>
-            <td>{{.State}}</td>
-            <td>{{.State}}</td>
+            {{if not .Owners}}
+                <td>нет</td>
+                <td>нет</td>
+            {{else}}
+                <td>{{(index .Owners 0).Name}}</td>
+                <td>{{(index .Owners 0).Phone}}</td>
+            {{end}}
         </tr>
     {{end}}
     </tbody>

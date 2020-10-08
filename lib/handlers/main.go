@@ -13,7 +13,7 @@ func MainPage(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		u := models.NewUser("Кадырбеков", "Данияр")
 		flats := make([]models.Flat, 0)
-		database.Find(&flats)
+		database.Preload("Owners").Find(&flats)
 
 		addresses := make([]models.Address, 0)
 		database.Find(&addresses)

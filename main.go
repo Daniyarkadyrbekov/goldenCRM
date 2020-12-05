@@ -14,6 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	"github.com/goldenCRM.git/lib/handlers"
+	"github.com/goldenCRM.git/lib/handlers/auth"
 	"github.com/goldenCRM.git/lib/models"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
@@ -45,31 +46,38 @@ func main() {
 		log.Fatal("$PORT must be set")
 	}
 
-	router := gin.New()
-	router.Use(gin.Logger())
+	r := gin.Default()
+	r.Use(gin.Logger())
 
-	err = initResources(l, router)
+	err = initResources(l, r)
 	if err != nil {
 		l.Fatal("can't init resources", zap.Error(err))
 	}
 
-	//TODO: make main handler
-	router.GET("/", handlers.MainPage(l, database))
+	//r.GET("/", auth.SignIn())
+	r.GET("/", auth.SignIn())
+	r.POST("/authorize", auth.Authorize(l, database))
 
-	router.GET("/flat/info", handlers.FlatInfo(l, database))
-	router.POST("/flat/add", handlers.FlatAdd(l, database))
-	router.POST("/flat/search", handlers.FlatSearch(l, database))
+	authorized := r.Group("auth", auth.IsAuthorized(l, database))
 
-	router.GET("/admin", handlers.AdminMain(l))
-	router.GET("/admin/addresses", handlers.AdminGetAddresses(l, database))
-	router.POST("/admin/addAddress", handlers.AdminAddAddress(l, database))
-	router.POST("/admin/deleteAddress", handlers.AdminDeleteAddress(l, database))
+	authorized.GET("/", handlers.MainPage(l, database))
 
-	router.GET("/admin/landmarks", handlers.AdminGetLandmarks(l, database))
-	router.POST("/admin/addLandmark", handlers.AdminAddLandmark(l, database))
-	router.POST("/admin/deleteLandmark", handlers.AdminDeleteLandmark(l, database))
+	//authorized.GET("/signOut", auth.Register(l, database))
+	//authorized.GET("/register", auth.Register(l, database))
 
-	err = router.Run(":" + port)
+	authorized.GET("/info", handlers.FlatInfo(l, database))
+	authorized.POST("/add", handlers.FlatAdd(l, database))
+	authorized.POST("/search", handlers.FlatSearch(l, database))
+
+	authorized.GET("/admin", handlers.AdminMain(l))
+	authorized.GET("/admin/addresses", handlers.AdminGetAddresses(l, database))
+	authorized.POST("/admin/addAddress", handlers.AdminAddAddress(l, database))
+	authorized.POST("/admin/deleteAddress", handlers.AdminDeleteAddress(l, database))
+	authorized.GET("/admin/landmarks", handlers.AdminGetLandmarks(l, database))
+	authorized.POST("/admin/addLandmark", handlers.AdminAddLandmark(l, database))
+	authorized.POST("/admin/deleteLandmark", handlers.AdminDeleteLandmark(l, database))
+
+	err = r.Run(":" + port)
 	if err != nil {
 		l.Error("closing server", zap.Error(err))
 	}
@@ -127,7 +135,7 @@ func getDatabase() (database *gorm.DB, err error) {
 	}
 
 	database.AutoMigrate(&models.Flat{}, &models.Owner{}, &models.Address{}, &models.Landmark{})
-	database.Model(&models.Owner{}).AddForeignKey("owner_id", "owners(owner_id)", "CASCADE", "CASCADE") // Foreign key need to define manually
+	database.Model(&models.Owner{}).AddForeignKey("owner_id", "owners(owner_id)", "CASCADE", "CASCADE")
 
 	return
 }

@@ -53,7 +53,7 @@ func FlatAdd(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		}
 
 		database.Create(&flat)
-		c.Redirect(http.StatusFound, "/")
+		c.Redirect(http.StatusFound, "/auth")
 	}
 }
 

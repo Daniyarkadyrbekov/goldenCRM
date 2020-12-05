@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	cookieName = "golden_crm_test_7"
+	cookieName = "golden_crm_test_14"
+	cookieVal  = "someCookie"
 	ttl        = 365 * 24 * time.Hour
 )
 
@@ -29,12 +30,14 @@ func Authorize(l *zap.Logger, _ *gorm.DB) func(c *gin.Context) {
 			l.Error("no name in form")
 			c.Redirect(http.StatusTemporaryRedirect, "/")
 			c.AbortWithStatus(http.StatusTemporaryRedirect)
+			return
 		}
 		password, ok := c.GetPostForm("password")
 		if !ok {
 			l.Error("no password in form")
 			c.Redirect(http.StatusTemporaryRedirect, "/")
 			c.AbortWithStatus(http.StatusTemporaryRedirect)
+			return
 		}
 		if user != "user" || password != "password" {
 			l.Error("middlewareErr",
@@ -44,8 +47,10 @@ func Authorize(l *zap.Logger, _ *gorm.DB) func(c *gin.Context) {
 				zap.String("password", password))
 			c.Redirect(http.StatusTemporaryRedirect, "/")
 			c.AbortWithStatus(http.StatusTemporaryRedirect)
+			return
 		}
-		c.SetCookie(cookieName, "someCookie", int(ttl.Seconds()), "/", "localhost", true, true)
+		l.Debug("set cookie", zap.String("cookie", cookieVal))
+		c.SetCookie(cookieName, cookieVal, int(ttl.Seconds()), "/", "localhost", false, true)
 		c.Redirect(http.StatusFound, "/auth")
 	}
 }
@@ -56,10 +61,11 @@ func IsAuthorized(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 
 	return func(c *gin.Context) {
 		cookie, err := c.Cookie(cookieName)
-		if err != nil {
+		if err != nil || cookie == "" {
 			l.Error("get cookie err", zap.Error(err))
 			c.Redirect(http.StatusTemporaryRedirect, "/")
 			c.AbortWithStatus(http.StatusTemporaryRedirect)
+			return
 		}
 
 		l.Info("successful authorize", zap.String("cookie", cookie))

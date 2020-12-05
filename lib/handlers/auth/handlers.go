@@ -49,7 +49,7 @@ func Authorize(l *zap.Logger, _ *gorm.DB) func(c *gin.Context) {
 			c.AbortWithStatus(http.StatusTemporaryRedirect)
 			return
 		}
-		l.Debug("set cookie", zap.String("cookie", cookieVal))
+		l.Info("set cookie", zap.String("cookie", cookieVal))
 		c.SetCookie(cookieName, cookieVal, int(ttl.Seconds()), "/", "localhost", false, true)
 		c.Redirect(http.StatusFound, "/auth")
 	}

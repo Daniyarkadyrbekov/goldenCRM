@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	cookieName = "golden_crm_test_5"
+	cookieName = "golden_crm_test_7"
+	ttl        = 365 * 24 * time.Hour
 )
 
 func SignIn() func(c *gin.Context) {
@@ -44,8 +45,7 @@ func Authorize(l *zap.Logger, _ *gorm.DB) func(c *gin.Context) {
 			c.Redirect(http.StatusTemporaryRedirect, "/")
 			c.AbortWithStatus(http.StatusTemporaryRedirect)
 		}
-		ttl := 365 * 24 * time.Hour
-		c.SetCookie(cookieName, "someCookie", int(ttl.Seconds()), "/", "localhost", false, true)
+		c.SetCookie(cookieName, "someCookie", int(ttl.Seconds()), "/", "localhost", true, true)
 		c.Redirect(http.StatusFound, "/auth")
 	}
 }

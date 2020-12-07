@@ -44,7 +44,7 @@ func AdminAddAddress(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 			c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		c.Redirect(http.StatusFound, "/admin/addresses")
+		c.Redirect(http.StatusFound, "/auth/admin/addresses")
 	}
 }
 
@@ -69,7 +69,7 @@ func AdminDeleteAddress(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 			c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		c.Redirect(http.StatusFound, "/admin/addresses")
+		c.Redirect(http.StatusFound, "/auth/admin/addresses")
 	}
 }
 
@@ -100,7 +100,7 @@ func AdminAddLandmark(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 			c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		c.Redirect(http.StatusFound, "/admin/landmarks")
+		c.Redirect(http.StatusFound, "/auth/admin/landmarks")
 	}
 }
 
@@ -125,6 +125,6 @@ func AdminDeleteLandmark(l *zap.Logger, database *gorm.DB) func(c *gin.Context) 
 			c.String(http.StatusInternalServerError, err.Error())
 		}
 
-		c.Redirect(http.StatusFound, "/admin/landmarks")
+		c.Redirect(http.StatusFound, "/auth/admin/landmarks")
 	}
 }

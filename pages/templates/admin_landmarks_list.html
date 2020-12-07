@@ -1,6 +1,6 @@
 {{ template "base_header" . }}
 
-<form class="form" action="/admin/addLandmark" method="POST">
+<form class="form" action="/auth/admin/addLandmark" method="POST">
     <div class="form-row">
         <div class="input-group col-md-6">
             <input type="text" class="form-control" placeholder="Адресс" name="Landmark">
@@ -12,7 +12,7 @@
 </form>
 
 {{range .landmarks}}
-    <form class="form" action="/admin/deleteLandmark" method="POST">
+    <form class="form" action="/auth/admin/deleteLandmark" method="POST">
         <div class="form-row">
             <div class="input-group col-md-6">
                 <input type="hidden" name="ID" value="{{.ID}}">

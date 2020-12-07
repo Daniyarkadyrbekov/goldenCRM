@@ -14,6 +14,7 @@ type Flat struct {
 	LandMark    string
 	Address     string
 	HomeNumber  int
+	Building    string
 	FlatNumber  int
 	PriceMin    int
 	PriceMax    int
@@ -37,6 +38,7 @@ func NewFlat(Area string,
 	LandMark string,
 	Address string,
 	HomeNumberStr string,
+	Building string,
 	FlatNumberStr string,
 	PriceMinStr string,
 	PriceMaxStr string,
@@ -77,6 +79,7 @@ func NewFlat(Area string,
 		LandMark:    LandMark,
 		Address:     Address,
 		HomeNumber:  intsMap["HomeNumber"],
+		Building:    Building,
 		FlatNumber:  intsMap["FlatNumber"],
 		PriceMin:    intsMap["PriceMin"],
 		PriceMax:    intsMap["PriceMax"],

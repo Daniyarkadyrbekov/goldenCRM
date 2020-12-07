@@ -21,10 +21,14 @@ build:
 local:
 	heroku local web
 
-.PHONY: deploy
+.PHONY: deploy-master
 deploy:
 	git push heroku master
 
+
+.PHONY: deploy-develop
+deploy:
+	git push heroku develop
 
 .PHONY: mod
 mod:

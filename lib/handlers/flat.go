@@ -75,12 +75,12 @@ func FlatSearch(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		database.Where(&flat).Where(complexCondition).Preload("Owners").Find(&flats)
 
 		//filter flats by ownerPhoneNumber
-		if len(owners) == 1 && owners[0].Phone != "" {
+		if len(owners) == 1 && (owners[0].Phone != "" || owners[0].Name != "") {
 			result := make([]models.Flat, 0, len(flats))
 			for _, f := range flats {
 				matched := false
 				for _, owner := range f.Owners {
-					if owners[0].Phone == owner.Phone {
+					if owners[0].Phone == owner.Phone || owners[0].Name == owner.Name {
 						matched = true
 						break
 					}
@@ -110,6 +110,7 @@ func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, err
 	area, _ := c.GetPostForm("InputArea")
 	address, _ := c.GetPostForm("InputAddress")
 	homeNumber, _ := c.GetPostForm("InputHomeNumber")
+	building, _ := c.GetPostForm("InputBuilding")
 	flatNumber, _ := c.GetPostForm("InputFlatNumber")
 	priceMin, _ := c.GetPostForm("InputPriceMin")
 	priceMax, _ := c.GetPostForm("InputPriceMax")
@@ -134,6 +135,7 @@ func getFlatFromForm(c *gin.Context, requiredFieldsCheck bool) (models.Flat, err
 		landMark,
 		address,
 		homeNumber,
+		building,
 		flatNumber,
 		priceMin,
 		priceMax,

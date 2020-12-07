@@ -22,12 +22,12 @@ local:
 	heroku local web
 
 .PHONY: deploy-master
-deploy:
+deploy-master:
 	git push heroku master
 
 
 .PHONY: deploy-develop
-deploy:
+deploy-develop:
 	git push heroku develop
 
 .PHONY: mod

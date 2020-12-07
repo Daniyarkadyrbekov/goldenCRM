@@ -1,5 +1,5 @@
 {{ define "search_form" }}
-    <form id="my-form" action="/flat/search" method="POST">
+    <form id="my-form" action="/auth/flat/search" method="POST">
         <div class="form-row">
             <div class="form-group col-md-1">
                 <label>Р-он</label>
@@ -11,7 +11,7 @@
                     <option selected></option>
                 </select>
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-1">
                 <label>Адрес</label>
                 <input type="text" class="form-control" name="InputAddress">
             </div>
@@ -22,6 +22,10 @@
             <div class="form-group col-md-1">
                 <label>Дом №</label>
                 <input type="text" class="form-control" name="InputHomeNumber">
+            </div>
+            <div class="form-group col-md-1">
+                <label>Строение</label>
+                <input type="text" class="form-control" name="InputBuilding">
             </div>
             <div class="form-group col-md-1">
                 <label>Квартира №</label>
@@ -120,7 +124,11 @@
                 <label>комнаты раздельные</label>
                 <input type="checkbox" name="inputIsSeparated" aria-label="Checkbox for following text input">
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-2">
+                <label>имя</label>
+                <input type="text" name='InputOwnerName0'  placeholder='Имя' class="form-control"/>
+            </div>
+            <div class="form-group col-md-3">
                 <label>телефон</label>
                 <input type="tel" name='InputOwnerPhoneNumber0' placeholder='7076662233' class="form-control" pattern="[0-9]{3}[0-9]{3}[0-9]{2}[0-9]{2}"/>
             </div>

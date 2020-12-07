@@ -16,10 +16,10 @@ func MainPage(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 		database.Preload("Owners").Find(&flats)
 
 		addresses := make([]models.Address, 0)
-		database.Find(&addresses)
+		database.Order("address").Find(&addresses)
 
 		landmarks := make([]models.Landmark, 0)
-		database.Find(&landmarks)
+		database.Order("landmark").Find(&landmarks)
 
 		c.HTML(200, "index.html", gin.H{
 			"user":      &u,

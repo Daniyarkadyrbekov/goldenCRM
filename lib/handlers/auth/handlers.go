@@ -50,6 +50,7 @@ func Authorize(l *zap.Logger, _ *gorm.DB) func(c *gin.Context) {
 			return
 		}
 		c.SetCookie(cookieName, cookieVal, int(ttl.Seconds()), "/", "https://still-wave-90176.herokuapp.com", false, true)
+		c.SetCookie(cookieName, cookieVal, int(ttl.Seconds()), "/", "localhost", false, true)
 		c.Redirect(http.StatusFound, "/auth")
 	}
 }

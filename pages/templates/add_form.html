@@ -1,5 +1,5 @@
 {{ define "add_form" }}
-    <form id="my-form" action="/flat/add" method="POST">
+    <form id="my-form" action="/auth/flat/add" method="POST">
         <div class="form-row">
             <div class="form-group col-md-1">
                 <label>Р-он</label>
@@ -11,7 +11,7 @@
                     <option selected></option>
                 </select>
             </div>
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-1">
                 <label>Адрес</label>
                 <input type="text" class="form-control" name="InputAddress" list="addresses" autocomplete="off">
                 <datalist id="addresses">
@@ -32,6 +32,10 @@
             <div class="form-group col-md-1">
                 <label>Дом №</label>
                 <input type="text" class="form-control" name="InputHomeNumber">
+            </div>
+            <div class="form-group col-md-1">
+                <label>Строение</label>
+                <input type="text" class="form-control" name="InputBuilding">
             </div>
             <div class="form-group col-md-1">
                 <label>Квартира №</label>

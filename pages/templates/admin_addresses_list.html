@@ -1,6 +1,6 @@
 {{ template "base_header" . }}
 
-<form class="form" action="/admin/addAddress" method="POST">
+<form class="form" action="/auth/admin/addAddress" method="POST">
     <div class="form-row">
         <div class="input-group col-md-6">
             <input type="text" class="form-control" placeholder="Адресс" name="Address">
@@ -12,7 +12,7 @@
 </form>
 
 {{range .addresses}}
-<form class="form" action="/admin/deleteAddress" method="POST">
+<form class="form" action="/auth/admin/deleteAddress" method="POST">
     <div class="form-row">
         <div class="input-group col-md-6">
             <input type="hidden" name="ID" value="{{.ID}}">

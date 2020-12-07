@@ -23,12 +23,12 @@
     </thead>
     <tbody>
     {{range .flats}}
-        <tr class="table-row" data-href="/flat/info?ID={{.ID}}">
+        <tr class="table-row" data-href="/auth/flat/info?ID={{.ID}}">
             <td><input type="checkbox"></td>
             <td>{{.FlatID}}</td>
             <td>{{.Area}}</td>
             <td>{{.LandMark}}</td>
-            <td>{{.Address}} д{{.HomeNumber}} кв{{.FlatNumber}}</td>
+            <td>{{.Address}} д{{.HomeNumber}}/{{.Building}} кв{{.FlatNumber}}</td>
             <td>{{.PriceMin}}-{{.PriceMax}}</td>
             <td>{{.RoomsCount}}</td>
             <td>{{.Floor}}/{{.FloorsCount}}</td>

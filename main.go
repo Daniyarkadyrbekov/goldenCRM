@@ -60,9 +60,9 @@ func main() {
 	authorized := r.Group("auth", auth.IsAuthorized(l, database))
 
 	authorized.GET("/", handlers.MainPage(l, database))
-	authorized.GET("/info", handlers.FlatInfo(l, database))
-	authorized.POST("/add", handlers.FlatAdd(l, database))
-	authorized.POST("/search", handlers.FlatSearch(l, database))
+	authorized.GET("/flat/info", handlers.FlatInfo(l, database))
+	authorized.POST("/flat/add", handlers.FlatAdd(l, database))
+	authorized.POST("/flat/search", handlers.FlatSearch(l, database))
 
 	authorized.GET("/admin", handlers.AdminMain(l))
 	authorized.GET("/admin/addresses", handlers.AdminGetAddresses(l, database))

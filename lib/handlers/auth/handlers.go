@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	cookieName = "golden_crm_test_14"
+	cookieName = "golden_crm_test_15"
 	cookieVal  = "someCookie"
-	ttl        = 24 * time.Hour
+	ttl        = 365 * 24 * time.Hour
 )
 
 func SignIn() func(c *gin.Context) {

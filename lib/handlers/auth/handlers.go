@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	cookieName = "golden_crm_test_15"
+	cookieName = "golden_crm_test_16"
 	cookieVal  = "someCookie"
 	ttl        = 365 * 24 * time.Hour
 )

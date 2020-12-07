@@ -12,7 +12,7 @@ import (
 const (
 	cookieName = "golden_crm_test_14"
 	cookieVal  = "someCookie"
-	ttl        = 365 * 24 * time.Hour
+	ttl        = 24 * time.Hour
 )
 
 func SignIn() func(c *gin.Context) {

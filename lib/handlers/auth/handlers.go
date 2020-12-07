@@ -49,17 +49,8 @@ func Authorize(l *zap.Logger, _ *gorm.DB) func(c *gin.Context) {
 			c.AbortWithStatus(http.StatusTemporaryRedirect)
 			return
 		}
-		l.Info("set cookie", zap.String("cookie", cookieVal))
-		c.SetCookie(cookieName, cookieVal, int(ttl.Seconds()), "/", "localhost", false, true)
+		c.SetCookie(cookieName, cookieVal, int(ttl.Seconds()), "/", "https://still-wave-90176.herokuapp.com", false, true)
 		c.Redirect(http.StatusFound, "/auth")
-	}
-}
-
-func SetCookie(l *zap.Logger) func(c *gin.Context) {
-	return func(c *gin.Context) {
-		l.Info("set cookie", zap.String("cookie", "cookieVal"))
-		c.SetCookie("cookieName2", "cookieVal", int(ttl.Seconds()), "/", "https://still-wave-90176.herokuapp.com", false, false)
-		c.String(200, "success")
 	}
 }
 

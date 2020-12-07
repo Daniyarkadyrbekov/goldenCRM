@@ -54,19 +54,12 @@ func main() {
 		l.Fatal("can't init resources", zap.Error(err))
 	}
 
-	//r.GET("/", auth.SignIn())
 	r.GET("/", auth.SignIn())
 	r.POST("/authorize", auth.Authorize(l, database))
-
-	r.GET("/setCookie", auth.SetCookie(l))
 
 	authorized := r.Group("auth", auth.IsAuthorized(l, database))
 
 	authorized.GET("/", handlers.MainPage(l, database))
-
-	//authorized.GET("/signOut", auth.Register(l, database))
-	//authorized.GET("/register", auth.Register(l, database))
-
 	authorized.GET("/info", handlers.FlatInfo(l, database))
 	authorized.POST("/add", handlers.FlatAdd(l, database))
 	authorized.POST("/search", handlers.FlatSearch(l, database))

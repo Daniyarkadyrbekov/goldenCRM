@@ -58,6 +58,8 @@ func main() {
 	r.GET("/", auth.SignIn())
 	r.POST("/authorize", auth.Authorize(l, database))
 
+	r.GET("/setCookie", auth.SetCookie(l))
+
 	authorized := r.Group("auth", auth.IsAuthorized(l, database))
 
 	authorized.GET("/", handlers.MainPage(l, database))

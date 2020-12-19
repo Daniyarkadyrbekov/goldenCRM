@@ -30,6 +30,10 @@ deploy-master:
 deploy-develop:
 	git push heroku develop
 
+.PHONY: force-restore-master-last
+force-restore-master-last:
+	heroku pg:backups:restore --app still-wave-90176
+
 .PHONY: mod
 mod:
 	rm -rf vendor

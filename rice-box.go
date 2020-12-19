@@ -53,9 +53,9 @@ func init() {
 	}
 	file9 := &embedded.EmbeddedFile{
 		Filename:    "flat.html",
-		FileModTime: time.Unix(1607372925, 0),
+		FileModTime: time.Unix(1608399339, 0),
 
-		Content: string("{{ template \"base_header\" . }}\n    <h1>Квартира № {{.flat.FlatID}}</h1>\n    <h6>Район: {{.flat.Area}}</h6>\n    <h6>Ориентир: {{.flat.LandMark}}</h6>\n    <h6>Адрес: {{.flat.Address}}</h6>\n    <h6>Номер дома: {{.flat.HomeNumber}}</h6>\n    <h6>Строение: {{.flat.Building}}</h6>\n    <h6>Номер квартиры: {{.flat.FlatNumber}}</h6>\n    <h6>Минимальная цена: {{.flat.PriceMin}} Максимальная цена: {{.flat.PriceMax}}</h6>\n    <h6>Количество комнат: {{.flat.RoomsCount}}</h6>\n    <h6>Тип комнат: {{.flat.RoomsType}}</h6>\n    <h6>Этаж: {{.flat.Floor}}</h6>\n    <h6>Этажность: {{.flat.FloorsCount}}</h6>\n    <h6>Площадь: {{.flat.Square}}</h6>\n    <h6>Тип квартиры: {{.flat.FlatType}}</h6>\n    <h6>Состояние: {{.flat.State}}</h6>\n    <h6>Сан узел: {{.flat.Toilet}}</h6>\n    <h6>Колтчество сан узелов: {{.flat.ToiletCount}}</h6>\n    <h6>Год построения: {{.flat.BuildYear}}</h6>\n    <h6>Торцевая: {{.flat.IsCorner}}</h6>\n    <h6>Комнаты Раздельные: {{.flat.IsSeparated}}</h6>\n    <h6>Описание: {{.flat.Description}}</h6>\n{{range .flat.Owners}}\n    <h6>Владелец: {{.Name}}</h6>\n    <h6>Номер: {{.Phone}}</h6>\n{{end}}\n{{ template \"base_bottom\" . }}"),
+		Content: string("{{ template \"base_header\" . }}\n    <h1>ID {{.flat.FlatID}}</h1>\n    <h6>Район: {{.flat.Area}}</h6>\n    <h6>Ориентир: {{.flat.LandMark}}</h6>\n    <h6>Адрес: {{.flat.Address}}</h6>\n    <h6>Номер дома: {{.flat.HomeNumber}}</h6>\n    <h6>Строение: {{.flat.Building}}</h6>\n    <h6>Номер квартиры: {{.flat.FlatNumber}}</h6>\n    <h6>Минимальная цена: {{.flat.PriceMin}} Максимальная цена: {{.flat.PriceMax}}</h6>\n    <h6>Количество комнат: {{.flat.RoomsCount}}</h6>\n    <h6>Тип комнат: {{.flat.RoomsType}}</h6>\n    <h6>Этаж: {{.flat.Floor}}</h6>\n    <h6>Этажность: {{.flat.FloorsCount}}</h6>\n    <h6>Площадь: {{.flat.Square}}</h6>\n    <h6>Тип квартиры: {{.flat.FlatType}}</h6>\n    <h6>Состояние: {{.flat.State}}</h6>\n    <h6>Сан узел: {{.flat.Toilet}}</h6>\n    <h6>Колтчество сан узелов: {{.flat.ToiletCount}}</h6>\n    <h6>Год построения: {{.flat.BuildYear}}</h6>\n    <h6>Торцевая: {{.flat.IsCorner}}</h6>\n    <h6>Комнаты Раздельные: {{.flat.IsSeparated}}</h6>\n    <h6>Описание: {{.flat.Description}}</h6>\n{{range .flat.Owners}}\n    <h6>Владелец: {{.Name}}</h6>\n    <h6>Номер: {{.Phone}}</h6>\n{{end}}\n\n<form class=\"form\" action=\"/auth/flat/delete\" method=\"POST\">\n    <div class=\"form-row\">\n        <div class=\"input-group col-md-6\">\n            <input type=\"hidden\" name=\"ID\" value=\"{{.flat.ID}}\">\n            <button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#exampleModal\">Удалить</button>\n        </div>\n    </div>\n\n    <!-- Modal -->\n    <div class=\"modal fade\" id=\"exampleModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n        <div class=\"modal-dialog\" role=\"document\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <h5 class=\"modal-title\" id=\"exampleModalLabel\">уверены что хотите удалить квартиру?</h5>\n                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n                        <span aria-hidden=\"true\">&times;</span>\n                    </button>\n                </div>\n                <div class=\"modal-body\">\n                    адрес: {{.flat.Address}}\n                </div>\n                <div class=\"modal-footer\">\n                    <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Отменить</button>\n                    <button type=\"submit\" class=\"btn btn-primary mb-2\">Удалить</button>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>\n{{ template \"base_bottom\" . }}"),
 	}
 	filea := &embedded.EmbeddedFile{
 		Filename:    "index.html",
@@ -79,7 +79,7 @@ func init() {
 	// define dirs
 	dir1 := &embedded.EmbeddedDir{
 		Filename:   "",
-		DirModTime: time.Unix(1608395884, 0),
+		DirModTime: time.Unix(1608399339, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file2, // "add_form.html"
 			file3, // "admin_addresses_list.html"
@@ -102,7 +102,7 @@ func init() {
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`pages/templates`, &embedded.EmbeddedBox{
 		Name: `pages/templates`,
-		Time: time.Unix(1608395884, 0),
+		Time: time.Unix(1608399339, 0),
 		Dirs: map[string]*embedded.EmbeddedDir{
 			"": dir1,
 		},

@@ -62,6 +62,7 @@ func main() {
 	authorized.GET("/", handlers.MainPage(l, database))
 	authorized.GET("/flat/info", handlers.FlatInfo(l, database))
 	authorized.POST("/flat/add", handlers.FlatAdd(l, database))
+	authorized.POST("/flat/delete", handlers.FlatDelete(l, database))
 	authorized.POST("/flat/search", handlers.FlatSearch(l, database))
 
 	authorized.GET("/admin", handlers.AdminMain(l))

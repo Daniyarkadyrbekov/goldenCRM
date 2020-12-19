@@ -57,6 +57,29 @@ func FlatAdd(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 	}
 }
 
+func FlatDelete(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
+
+	l = l.With(zap.String("method", "FlatDelete"))
+	return func(c *gin.Context) {
+		idStr, ok := c.GetPostForm("ID")
+		if !ok {
+			l.Error("no id in postForm")
+			c.String(500, "failed")
+			return
+		}
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			l.Error("failed to convert flatID", zap.Error(err))
+			c.String(500, "internal err")
+			return
+		}
+
+		database.Delete(&models.Flat{Model: gorm.Model{ID: uint(id)}})
+
+		c.Redirect(http.StatusFound, "/auth")
+	}
+}
+
 func FlatSearch(l *zap.Logger, database *gorm.DB) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		flat, err := getFlatFromForm(c, false)

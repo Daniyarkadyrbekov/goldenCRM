@@ -1,5 +1,5 @@
 {{ template "base_header" . }}
-    <h1>Квартира № {{.flat.FlatID}}</h1>
+    <h1>ID {{.flat.FlatID}}</h1>
     <h6>Район: {{.flat.Area}}</h6>
     <h6>Ориентир: {{.flat.LandMark}}</h6>
     <h6>Адрес: {{.flat.Address}}</h6>
@@ -24,4 +24,34 @@
     <h6>Владелец: {{.Name}}</h6>
     <h6>Номер: {{.Phone}}</h6>
 {{end}}
+
+<form class="form" action="/auth/flat/delete" method="POST">
+    <div class="form-row">
+        <div class="input-group col-md-6">
+            <input type="hidden" name="ID" value="{{.flat.ID}}">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Удалить</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">уверены что хотите удалить квартиру?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    адрес: {{.flat.Address}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                    <button type="submit" class="btn btn-primary mb-2">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 {{ template "base_bottom" . }}
